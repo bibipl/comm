@@ -1,0 +1,136 @@
+.start {
+    background: url("../images/header_start_img.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.decor {
+    background:  url("../images/decoration.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.about {
+    background: url("../images/about.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.logged {
+    background: url("../images/header_logged_img.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.navlog {
+    width: 100%;
+    display: inline-block;
+}
+.usertd4 {
+    width: 25%;
+    border-collapse: collapse;
+    border: 1px solid;
+}
+
+.usertd8 {
+    width: 12%;
+    border-collapse: collapse;
+    border: 1px solid;
+}
+.usertd16 {
+    width: 8%;
+    border-collapse: collapse;
+    border: 1px solid;
+    text-align: right;
+}
+
+.usertable {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid;
+}
+
+.center {
+    display: inline-block;
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+}
+
+.yesUser {
+    color: green;
+    font-weight: bold;
+}
+
+.notUser {
+    color: red;
+    font-weight: bold;
+}
+
+.usermenutable {
+    width: 100%;
+    border: solid 1px green;
+}
+.full {
+    width: 100%;
+}
+
+.usermenu80 {
+    width:80%;
+}
+.usermenu70 {
+    width:70%;
+}
+.usermenu60 {
+    width: 60%;
+
+}
+.usermenu40 {
+    width:40%;
+}
+.usermenu30 {
+    width:30%;
+}
+.usermenu20 {
+    width:20%;
+}
+.usermenu15 {
+    width:15%;
+}
+
+.usermenu10 {
+    width:10%;
+}
+
+.usermenutd3 {
+    width: 33%;
+}
+.usermenutd4 {
+    width: 25%;
+}
+
+.usermenutd5 {
+    width: 20%;
+}
+
+.usermenu {
+    width: 100%;
+}
+
+.steps14 {
+    width: 14%;
+}
+
+.steps8 {
+    width: 8%;
+}
+
+
+

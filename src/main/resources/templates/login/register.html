@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/my.css}" rel="stylesheet"/>
+</head>
+<body class="start">
+<h1>REJESTRACJA NOWEGO UŻYTKOWNIKA</h1>
+<a th:href="@{/}" class="btn btn-info" style="width: 100%">MENU</a>
+<form th:action="@{/register}" th:object="${user}" method="post">
+    <div class="container">
+        <br><br>
+        <div class="card" style="width: 25%">
+            <div class="card-body">
+                <div class="form-group"><label> PODAJ EMAIL <input th:field="*{username}" type="text" name="username" class="form-control"/></label></div>
+                <div class="form-group"><label> PODAJ EMAIL <input type="text" name="email" class="form-control"/></label></div>
+                <div class="form-group"><label> PODAJ HASŁO <input type="password" name="password" class="form-control"/> </label></div>
+                <div class="form-group"><label> POWTÓRZ HASŁO <input type="password" name="passwordCheck" class="form-control"/> </label></div>
+                <div><input type="submit" class="btn btn-primary" style="width: 100%" value="REJESTRUJ"/></div>
+                <br/>
+                <br/>
+                <div><a th:href="@{/}" class="btn btn-info" style="width: 100%">MENU</a></div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>

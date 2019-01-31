@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/my.css}" rel="stylesheet"/>
+
+</head>
+
+<body>
+    <br/>
+    <table th:class="usermenutable">
+        <tr>
+            <td th:class="usermenu30"></td>
+            <td th:class="usermenu40">
+                <a th:href="@{/}" class="btn btn-secondary">Start</a>
+                <a th:href="@{/}" class="btn btn-secondary">O co chodzi</a>
+                <a th:href="@{/}" class="btn btn-secondary">O nas</a>
+                <a th:href="@{/}" class="btn btn-secondary">Fundacje i organizacje</a>
+                <a th:href="@{/}" class="btn btn-secondary">Kontakt</a>
+            </td>
+            <td th:class="usermenu30"></td>
+        </tr>
+    </table>
+<br/><br/>
+    <table th:class="usermenutable">
+        <tr>
+            <td th:class="usermenu10"></td>
+                <td th:class="usermenu40">
+                    <a th:href="@{/login}" class="btn btn-success full">Zaloguj</a>
+                </td>
+                <td th:class="usermenu40">
+                    <a th:href="@{/register}" class="btn btn-primary full">Załóż konto</a>
+                </td>
+            <td th:class="usermenu10"></td>
+        </tr>
+    </table>
+</body>
+</html>
