@@ -61,7 +61,7 @@ public class Start {
         roles.add(role1);
         roles.add(role2);
         User user = new User();
-        user.setUsername("email@email.com"); <- here your email that will be also a login
+        user.setUsername("m.kop@gazeta.pl"); <- here your email that will be also a login
         user.setName("Name");
         user.setSurname("Surname);
         user.setPassword("123");

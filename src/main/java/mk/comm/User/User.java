@@ -1,6 +1,7 @@
 package mk.comm.User;
 
 import lombok.Data;
+import mk.comm.Community.Community;
 import mk.comm.Role.Role;
 
 import javax.persistence.*;
@@ -31,24 +32,19 @@ public class User {
     @NotBlank
     private String surname;
 
-    private String phone;
-
     @NotBlank
     private String password;
     @Transient
     private String passwordCheck;
 
     private int enabled = 0;
-    
-    private char sex;
-    
-    private Long married; // 0 - not married, 1 id of wife.houseband
-    
-    private int attendance; //  higher number - less times comes to meetings.
+
+    @OneToOne (cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "community_id", unique=true)
+    private Community community;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
  }
-
