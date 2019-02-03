@@ -30,17 +30,16 @@ public class Member {
 
     private String phone;
 
-    @NotBlank
     private char sex;
 
     // married = 0 if no wife/husband in the community.
-    @OneToOne
-    private Member married; // 0 - not married, 1 id of wife.houseband
+    private Long married; // 0 - not married, 1 id of wife.husband
 
-    @ManyToOne
-    final private Community community;
-    
+    private Long communityId;
+
     private int attendance; //  higher number - less times comes to meetings.
+
+    private  String token; // eventually to give acess to group data.
 
  }
 

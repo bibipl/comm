@@ -39,10 +39,6 @@ public class User {
 
     private int enabled = 0;
 
-    @OneToOne (cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "community_id", unique=true)
-    private Community community;
-
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))

@@ -1,10 +1,78 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>OWNER</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/my.css}" rel="stylesheet"/>
 </head>
 <body>
-    <h1>Tu jest strona OWNERA</h1>
+<br/><br/>
+<div class="container">
+    <table class="usermenutable">
+        <tr>
+            <td class="usermenu50">
+                        <span>
+                            <a class="btn btn-warning usermenu"  th:href="@{'/owner/'}" th:text="'WŁAŚCICIEL SERWISU : ' + ${iam.name} + ' ' + ${iam.surname}">
+                            </a>
+                        </span>
+            </td>
+            <td class="usermenu20">
+                        <span>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/'}">
+                               ADMINISTRATOR WSPÓLNOTY
+                            </a>
+                        </span>
+            </td>
+            <td class="usermenu20">
+                        <span>
+                            <a class="btn btn-info usermenu"  th:href="@{'/user/'}">
+                               CZŁONEK WSPÓLNOTY
+                            </a>
+                        </span>
+            </td>
+            <td class="usermenu10">
+                <span>
+                    <form th:action="@{/logout}" method="post" >
+                        <input class="btn btn-danger usermenu" type="submit" value="WYLOGUJ"/>
+                    </form>
+                </span>
+            </td>
+        </tr>
+    </table>
+    <table class="usermenutable">
+        <tr>
+            <td class="usermenutd4">
+                <span>
+                    <a class="btn btn-secondary usermenu"  th:href="@{|/|}">
+                        WŁAŚCICIELE
+                    </a>
+                </span>
+            </td>
+            <td class="usermenutd4">
+                <span>
+                    <a class="btn btn-secondary usermenu" th:href="@{|/|} ">
+                        ADMINISTRATORZY
+                    </a>
+                </span>
+            </td>
+            <td class="usermenutd4">
+                <span>
+                    <a class="btn btn-secondary usermenu" th:href="@{'/'} ">
+                        CZŁONKOWIE
+                    </a>
+                </span>
+            </td>
+            <td class="usermenutd4">
+                <span>
+                    <a class="btn btn-secondary usermenu" th:href="@{'/'} ">
+                        WSPÓLNOTY
+                    </a>
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

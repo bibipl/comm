@@ -6,5 +6,7 @@ import mk.comm.Member.Member;
 import java.util.List;
 
 public interface MemberService {
-    List<Member> findAllByCommunity (Community community);
+    void save (Member member);
+    List<Member> findAllByCommunityId(Long id);
+
 }

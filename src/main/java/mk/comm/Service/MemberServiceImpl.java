@@ -17,7 +17,13 @@ public class MemberServiceImpl implements MemberService{
     MemberRepository memberRepository;
 
     @Override
-    public List<Member> findAllByCommunity(Community community) {
-        return memberRepository.findAllByCommunity(community);
+    public void save(Member member) {
+        memberRepository.save(member);
+
+    }
+
+    @Override
+    public List<Member> findAllByCommunityId(Long id) {
+        return memberRepository.findAllByCommunityId(id);
     }
 }
