@@ -22,7 +22,12 @@ public class CommunityServiceImpl implements CommunityService{
     }
 
     @Override
-    public Community findByUserId(Long id) {
+    public void delete(Community community) {
+        communityRepository.delete(community);
+    }
+
+    @Override
+    public Community findById(Long id) {
         return communityRepository.findById(id);
     }
 

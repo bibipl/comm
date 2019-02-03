@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>COMM+</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/my.css}" rel="stylesheet"/>
+</head>
+<body>
+<br/><br/>
+<div class="container">
+    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'NOWA WSPÓLNOTA'
+    + ' ADMINISTRATOR WSPÓLNOTY : ' + ${iam.name} + ' ' + ${iam.surname}"></button>
+    <table class="usermenutable">
+        <tr>
+            <td class="usermenu20">
+                        <span>
+                            <a class="btn btn-warning usermenu"  th:href="@{'/'}" th:text="'MENU GŁÓWNE'"></a>
+                        </span>
+            </td>
+            <td class="usermenu40">
+                        <span>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/'}" th:text="'STRONA ADMINISTRATORA'"></a>
+                        </span>
+            </td>
+            <td class="usermenu30">
+                        <span>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/communities'}" th:text="'WSPÓLNOTY'"></a>
+                        </span>
+            </td>
+            <td class="usermenu10">
+                <span>
+                    <form th:action="@{/logout}" method="post" >
+                        <input class="btn btn-warning usermenu" type="submit" value="WYLOGUJ"/>
+                    </form>
+                </span>
+            </td>
+        </tr>
+    </table>
+    <form th:action="@{/admin/community/add}" th:object="${community}" method="post">
+        <div class="container">
+            <br><br>
+            <div class="card">
+                <div class="card-body">
+                    <input type="hidden" th:field="*{id}"/>
+                    <input type="hidden" th:field="*{userId}"/>
+                    <table class="usermenutable">
+                        <tr>
+                            <td class="usermenu10">
+                                <div style="text-align: center">NAZWA</div>
+                            </td>
+                            <td class="usermenu90">
+                                <input class ="full" th:field="*{name}" type="text"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="usermenutable">
+                        <tr>
+                            <td class="usermenu50"><span><input type="submit" class="btn btn-success full" value="ZAPISZ"/></span></td>
+                            <td class="usermenu50"><span><a th:href="@{/admin/communities}" class="btn btn-info full">POWRÓT</a></span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Wspólnota</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/my.css}" rel="stylesheet"/>
+</head>
+<body>
+<br/><br/>
+<div class="container">
+    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'WSPÓLNOTA : ' + ${community.name}
+    + ' ADMINISTRATOR WSPÓLNOTY : ' + ${iam.name} + ' ' + ${iam.surname}"></button>
+    <table class="usermenutable">
+        <tr>
+            <td class="usermenu20">
+                        <span>
+                            <a class="btn btn-warning usermenu"  th:href="@{'/'}" th:text="'MENU GŁÓWNE'"></a>
+                        </span>
+            </td>
+            <td class="usermenu20">
+                        <span>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/'}" th:text="'STRONA ADMINISTRATORA'"></a>
+                        </span>
+            </td>
+            <td class="usermenu30">
+                        <span>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/communities'}" th:text="'POWRÓT-WSPÓLNOTY'"></a>
+                        </span>
+            </td>
+            <td class="usermenu20">
+                        <span>
+                            <a class="btn btn-info usermenu"  th:href="@{'/admin/community/member/add'}" th:text="'DODAJ NOWEGO CZŁONKA (+)'"></a>
+                        </span>
+            </td>
+            <td class="usermenu10">
+                <span>
+                    <form th:action="@{/logout}" method="post" >
+                        <input class="btn btn-warning usermenu" type="submit" value="WYLOGUJ"/>
+                    </form>
+                </span>
+            </td>
+        </tr>
+    </table>
+    <table class="usermenutable">
+        <thead>
+        <tr>
+            <th class="usermenu80">
+                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>CZŁONKOWIE</button>
+            </th>
+            <th class="usermenu10">
+                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>EDYTUJ</button>
+            </th>
+            <th class="usermenu10">
+                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>USUŃ</button>
+
+            </th>
+        </tr>
+        </thead>
+        <th:block th:each="member : ${members}">
+            <tr>
+                <td class="usermenu70">
+                    <span>
+                    <a th:href="@{'/admin/community/member/view/' + ${member.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${member.name} + ' ' + ${member.surname}"></a>
+                </span>
+                </td>
+                <td class="usermenu10">
+                    <span>
+                        <a class="btn btn-secondary usermenu" th:href="@{'/admin/community/member/edit/' + ${member.id}} ">
+                            EDYTUJ
+                        </a>
+                    </span>
+                </td>
+                <td class="usermenu10">
+                    <span>
+                        <a class="btn btn-danger usermenu" th:href="@{'/admin/community/member/delete/' + ${member.id}} ">
+                            USUŃ
+                        </a>
+                    </span>
+                </td>
+            </tr>
+        </th:block>
+    </table>
+    <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/communities'}" th:text="'Powrót do listy wspólnot'"></a>
+</div>
+</body>
+</html>

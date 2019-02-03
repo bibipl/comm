@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>COMM-</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/my.css}" rel="stylesheet"/>
+</head>
+<body>
+<br/><br/>
+<div class="container">
+    <table class="usermenutable">
+        <tr>
+            <td class="usermenu20">
+                        <span>
+                            <a class="btn btn-warning usermenu"  th:href="@{'/'}" th:text="'MENU GŁÓWNE'"></a>
+                        </span>
+            </td>
+            <td class="usermenu40">
+                        <span>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/'}" th:text="'STRONA ADMINISTRATORA'"></a>
+                        </span>
+            </td>
+            <td class="usermenu30">
+                        <span>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/communities'}" th:text="'WSPÓLNOTY'"></a>
+                        </span>
+            </td>
+            <td class="usermenu10">
+                <span>
+                    <form th:action="@{/logout}" method="post" >
+                        <input class="btn btn-warning usermenu" type="submit" value="WYLOGUJ"/>
+                    </form>
+                </span>
+            </td>
+        </tr>
+    </table>
+    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'WSPÓLNOTA : ' + ${community.name}"></button>
+    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'ADMINISTRATOR WSPÓLNOTY : ' + ${iam.name} + ' ' + ${iam.surname}"></button>
+    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'WSPÓLNOTA MA  : ' + ${ilenas} + ' CZŁONKÓW !!!'"></button>
+    <form th:action="@{/admin/community/delete}" th:object="${community}" method="post">
+        <div class="container">
+            <br><br>
+            <div class="card full">
+                <div class="card-body">
+                    <input type="hidden" th:field="*{id}"/>
+                    <input type="hidden" th:field="*{userId}"/>
+                    <input type="hidden" th:field="*{name}"/>
+                    <table class="usermenutable">
+                        <tr>
+                            <td class="=usermenu50">
+                                <span><input type="submit" class="btn btn-danger" style="width: 100%" value="USUŃ"/></span>
+                            </td>
+                            <td class="usermenu50">
+                                <span><a th:href="@{/admin/communities}" class="btn btn-success" style="width: 100%">ANULUJ</a></span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

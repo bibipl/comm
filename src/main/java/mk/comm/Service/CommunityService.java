@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface CommunityService {
     void save (Community community);
-    Community findByUserId (Long id);
+    void delete (Community community);
+    Community findById (Long id);
     List<Community> findAllByUserId (Long id);
 
 
