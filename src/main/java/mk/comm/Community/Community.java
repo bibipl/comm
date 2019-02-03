@@ -1,10 +1,8 @@
 package mk.comm.Community;
 
 import lombok.Data;
-import mk.comm.Member.Member;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @Entity

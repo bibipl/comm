@@ -1,7 +1,6 @@
 package mk.comm.Member;
 
 import lombok.Data;
-import mk.comm.Community.Community;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

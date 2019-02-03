@@ -1,7 +1,7 @@
 package mk.comm;
 
-import mk.comm.Community.Community;
-import mk.comm.Member.Member;
+import mk.comm.Community.Community; // for first time run needed
+import mk.comm.Member.Member;       // for first time run needed
 import mk.comm.Role.Role;
 import mk.comm.Service.CommunityService;
 import mk.comm.Service.MemberService;
@@ -15,8 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashSet;       // for first time run needed
+import java.util.Set;           // for first time run needed
 
 @Controller
 public class Start {
@@ -32,7 +32,6 @@ public class Start {
 
     @GetMapping("/")
     public String start(@AuthenticationPrincipal CurrentUser customUser, Model model) {
-
         // START of usual code
         if (customUser != null) {
             User entityUser = customUser.getUser();
@@ -52,13 +51,13 @@ public class Start {
 
             }
 
-
             if (isOwner) return "redirect:/owner/"; // owner can admin admins & all users
             if (isAdmin) return "redirect:/admin/"; // admin - admin own users in own community
             if (isUser) return "redirect:/user/";   //  user - belongs to community
         }
         // END of usual code
-        // START od firts time code
+
+        // START od first time code
         // change in application.properties database option from update to 'create'.
         // after executing first time code,  change back to 'update'
         /*Role role0 = new Role();
