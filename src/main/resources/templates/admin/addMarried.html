@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'NOWA WSPÓLNOTA'
+    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'WSPÓLNOTA : ' + ${community.name}
     + ' ADMINISTRATOR WSPÓLNOTY : ' + ${iam.name} + ' ' + ${iam.surname}"></button>
     <table class="usermenutable">
         <tr>
@@ -18,14 +18,20 @@
                             <a class="btn btn-warning usermenu"  th:href="@{'/'}" th:text="'MENU GŁÓWNE'"></a>
                         </span>
             </td>
-            <td class="usermenu40">
+            <td class="usermenu20">
                         <span>
                             <a class="btn btn-success usermenu"  th:href="@{'/admin/'}" th:text="'STRONA ADMINISTRATORA'"></a>
                         </span>
             </td>
             <td class="usermenu30">
                         <span>
-                            <a class="btn btn-success usermenu"  th:href="@{'/admin/communities'}" th:text="'WSPÓLNOTY'"></a>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/community/view/' + ${community.id}}"
+                               th:text="'POWRÓT DO LISTY CZŁONKÓW'"></a>
+                        </span>
+            </td>
+            <td class="usermenu20">
+                        <span>
+                            <a class="btn btn-info usermenu"  th:href="@{'/admin/community/member/add/' + ${community.id}}" th:text="'DODAJ NOWEGO CZŁONKA (+)'"></a>
                         </span>
             </td>
             <td class="usermenu10">
@@ -37,27 +43,33 @@
             </td>
         </tr>
     </table>
-    <form th:action="@{/admin/community/add}" th:object="${community}" method="post">
+    <table class="usermenutable">
+        <tr>
+            <td class="btn btn-primary disabled usermenu100" th:text="'Wybierasz małżonka dla' + ${member.name} + ' ' + ${member.surname}"></td>
+        </tr>
+    </table>
+    <form th:action="@{'/admin/community/member/addMarriage/' + ${member.id}}" th:object="${member}" method="post">
         <div class="container">
-            <br><br>
             <div class="card">
                 <div class="card-body">
                     <input type="hidden" th:field="*{id}"/>
-                    <input type="hidden" th:field="*{userId}"/>
+                    <input type="hidden" th:field="*{communityId}" th:value="${community.id}"/>
                     <table class="usermenutable">
-                        <tr>
-                            <td class="usermenu10">
-                                <div style="text-align: center">NAZWA</div>
+                        <tr> Here need to correct - show name save value.
+                            <td class="usermenu30">
+                                <div class="btn btn-primary full" style="text-align: center">MAŁŻONEK</div>
                             </td>
-                            <td class="usermenu90">
-                                <input class ="full" th:field="*{name}" type="text"/>
+                            <td class="usermenu70">
+                                <select th:field="*{married}" class="form-control btn btn-primary">
+                                    <option th:each="i : ${marriages}" th:value="${i.id}" th:text="${i.name} + ' ' + ${i.surname}"></option>
+                                </select>
                             </td>
                         </tr>
                     </table>
                     <table class="usermenutable">
                         <tr>
                             <td class="usermenu50"><span><input type="submit" class="btn btn-success full" value="ZAPISZ"/></span></td>
-                            <td class="usermenu50"><span><a th:href="@{/admin/communities}" class="btn btn-info full">POWRÓT</a></span></td>
+                            <td class="usermenu50"><span><a th:href="@{'/admin/community/view/' + ${community.id}}" class="btn btn-info full">POWRÓT</a></span></td>
                         </tr>
                     </table>
                 </div>

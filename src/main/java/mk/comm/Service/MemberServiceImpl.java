@@ -23,7 +23,32 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
+    public void delete(Member member) {
+        memberRepository.delete(member);
+    }
+
+    @Override
+    public Member findById(Long id) {
+        return memberRepository.findById(id);
+    }
+
+    @Override
     public List<Member> findAllByCommunityId(Long id) {
         return memberRepository.findAllByCommunityId(id);
     }
+
+    @Override
+    public List<Member> findAllBySex(char sex) {
+        return memberRepository.findAllBySex(sex);
+    }
+
+    @Override
+    public List<Member> findAllNotMarriedBySex(char sex) {
+        return memberRepository.findAllMarriedBySex(sex);
+    }
+
+
 }
+
+
+

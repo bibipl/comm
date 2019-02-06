@@ -7,6 +7,11 @@ import java.util.List;
 
 public interface MemberService {
     void save (Member member);
+    void  delete (Member member);
+    Member findById (Long id);
     List<Member> findAllByCommunityId(Long id);
+    List<Member> findAllBySex (char sex);
+    List<Member> findAllNotMarriedBySex (char sex);
+
 
 }

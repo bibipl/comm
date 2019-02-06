@@ -8,7 +8,6 @@
     <link th:href="@{/css/my.css}" rel="stylesheet"/>
 </head>
 <body>
-<br/><br/>
 <div class="container">
     <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'WSPÓLNOTA : ' + ${community.name}
     + ' ADMINISTRATOR WSPÓLNOTY : ' + ${iam.name} + ' ' + ${iam.surname}"></button>
@@ -31,7 +30,7 @@
             </td>
             <td class="usermenu20">
                         <span>
-                            <a class="btn btn-info usermenu"  th:href="@{'/admin/community/member/add'}" th:text="'DODAJ NOWEGO CZŁONKA (+)'"></a>
+                            <a class="btn btn-info usermenu"  th:href="@{'/admin/community/member/add/' + ${community.id}}" th:text="'DODAJ NOWEGO CZŁONKA (+)'"></a>
                         </span>
             </td>
             <td class="usermenu10">
@@ -46,23 +45,31 @@
     <table class="usermenutable">
         <thead>
         <tr>
-            <th class="usermenu80">
+            <th class="usermenu60">
                 <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>CZŁONKOWIE</button>
+            </th>
+            <th class="usermenu20">
+                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>NAPISZ</button>
             </th>
             <th class="usermenu10">
                 <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>EDYTUJ</button>
             </th>
             <th class="usermenu10">
-                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>USUŃ</button>
+                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>MAŁŻONEK</button>
 
             </th>
         </tr>
         </thead>
         <th:block th:each="member : ${members}">
             <tr>
-                <td class="usermenu70">
+                <td class="usermenu60">
                     <span>
                     <a th:href="@{'/admin/community/member/view/' + ${member.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${member.name} + ' ' + ${member.surname}"></a>
+                </span>
+                </td>
+                <td class="usermenu20">
+                    <span>
+                    <a th:href="@{'/admin/community/member/email/' + ${member.id}}" class="btn btn-success usermenu" style="text-align: left" th:text="${member.email}"></a>
                 </span>
                 </td>
                 <td class="usermenu10">
@@ -74,8 +81,11 @@
                 </td>
                 <td class="usermenu10">
                     <span>
-                        <a class="btn btn-danger usermenu" th:href="@{'/admin/community/member/delete/' + ${member.id}} ">
-                            USUŃ
+                        <a th:if="${member.married == 0}" class="btn btn-secondary usermenu" th:href="@{'/admin/community/member/addMarriage/' + ${member.id}} ">
+                            +
+                        </a>
+                        <a th:unless="${member.married == 0}" class="btn btn-secondary usermenu" th:href="@{'/admin/community/member/addMarriage/' + ${member.id}} ">
+                            -
                         </a>
                     </span>
                 </td>
