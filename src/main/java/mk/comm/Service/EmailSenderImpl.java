@@ -20,8 +20,8 @@ public class EmailSenderImpl implements EmailSender{
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
             helper.setTo(to);
-            helper.setReplyTo("goodhands@gazeta.pl");
-            helper.setFrom("goodhands@gazeta.pl");
+            helper.setReplyTo("wspolnota7@gazeta.pl");
+            helper.setFrom("wspolnota7@gazeta.pl");
             helper.setSubject(title);
             helper.setText(content, true);
         } catch (MessagingException e) {

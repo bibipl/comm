@@ -18,6 +18,9 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public void save(Member member) {
+        if (member != null && member.getEmail().equals("")) {
+            member.setEmail(null);
+        }
         memberRepository.save(member);
 
     }
@@ -45,6 +48,11 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public List<Member> findAllNotMarriedBySex(char sex) {
         return memberRepository.findAllMarriedBySex(sex);
+    }
+
+    @Override
+    public List<Member> findAllByCommunityIdOrderBySurname(Long id) {
+        return memberRepository.findAllByCommunityIdOrderBySurname(id);
     }
 
 

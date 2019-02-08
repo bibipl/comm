@@ -12,6 +12,6 @@ public interface MemberService {
     List<Member> findAllByCommunityId(Long id);
     List<Member> findAllBySex (char sex);
     List<Member> findAllNotMarriedBySex (char sex);
-
+    List<Member> findAllByCommunityIdOrderBySurname (Long id);
 
 }

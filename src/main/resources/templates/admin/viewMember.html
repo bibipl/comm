@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>COMM+</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/my.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'WSPÓLNOTA : ' + ${community.name}
+    + ' ADMINISTRATOR WSPÓLNOTY : ' + ${iam.name} + ' ' + ${iam.surname}"></button>
+    <table class="usermenutable">
+        <tr>
+            <td class="usermenu20">
+                        <span>
+                            <a class="btn btn-warning usermenu"  th:href="@{'/'}" th:text="'MENU GŁÓWNE'"></a>
+                        </span>
+            </td>
+            <td class="usermenu20">
+                        <span>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/'}" th:text="'STRONA ADMINISTRATORA'"></a>
+                        </span>
+            </td>
+            <td class="usermenu30">
+                        <span>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/community/view/' + ${community.id}}"
+                               th:text="'POWRÓT DO LISTY CZŁONKÓW'"></a>
+                        </span>
+            </td>
+            <td class="usermenu20">
+                        <span>
+                            <button type="button" class="btn btn-secondary usermenu" disabled>DODAWANIE NOWEGO CZŁONKA</button>
+                        </span>
+            </td>
+            <td class="usermenu10">
+                <span>
+                    <form th:action="@{/logout}" method="post" >
+                        <input class="btn btn-warning usermenu" type="submit" value="WYLOGUJ"/>
+                    </form>
+                </span>
+            </td>
+        </tr>
+    </table>
+        <div class="container" th:object="${member}">
+            <br><br>
+            <div class="card">
+                <div class="card-body">
+                    <input type="hidden" th:field="*{id}"/>
+                    <input type="hidden" th:field="*{communityId}" th:value="${community.id}"/>
+                    <table class="usermenutable">
+                        <tr>
+                            <td class="usermenu30">
+                                <span class="btn btn-secondary usermenu">WSPÓLNOTA</span>
+                            </td>
+                            <td class="usermenu70">
+                                <span class="btn btn-primary usermenu" style="text-align: left" th:text="${community.name}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="usermenu30">
+                                <span class="btn btn-secondary usermenu">IMIĘ</span>
+                            </td>
+                            <td class="usermenu70">
+                                <span class="btn btn-primary usermenu" style="text-align: left" th:text="*{name}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="usermenu30">
+                                <span class="btn btn-secondary usermenu">NAZWISKO</span>
+                            </td>
+                            <td class="usermenu70">
+                                <span class="btn btn-primary usermenu" style="text-align: left" th:text="*{surname}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="usermenu30">
+                                <span class="btn btn-secondary usermenu">EMAIL</span>
+                            </td>
+                            <td class="usermenu70">
+                                <span th:unless="(${member.email == ''} or ${member.email == null})" class="btn btn-primary usermenu" style="text-align: left" th:text="*{email}"></span>
+                                <span th:if="(${member.email == ''} or ${member.email == null})" class="btn btn-primary usermenu" style="text-align: left" th:text="' - '"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="usermenu30">
+                                <span class="btn btn-secondary usermenu">TELEFON</span>
+                            </td>
+                            <td class="usermenu70">
+                                <span th:unless="*{phone == ''}" class="btn btn-primary usermenu" style="text-align: left" th:text="*{phone}"></span>
+                                <span th:if="*{phone == ''}" class="btn btn-primary usermenu" style="text-align: left" th:text="' - '"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="usermenu30">
+                                <span class="btn btn-secondary usermenu">STAN</span>
+                            </td>
+                            <td class="usermenu70">
+                                <span th:if="*{married == 0}" class="btn btn-primary usermenu" style="text-align: left" th:text="'WOLNY'"></span>
+                                <span th:if="*{married != 0}" class="btn btn-primary usermenu" style="text-align: left" th:text="'W ZWIĄZKU MAŁŻEŃSKIM'"></span>
+                            </td>
+                        </tr>
+                        <tr th:unless="*{married == 0}">
+                            <td class="usermenu30">
+                                <span class="btn btn-secondary usermenu" th:text="MAŁŻONEK"></span>
+                            </td>
+                            <td class="usermenu70">
+                                <span class="btn btn-primary usermenu" style="text-align: left" th:text="${marry}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="usermenu30">
+                                <span class="btn btn-secondary usermenu">PRZYCHODZI DO WSPÓLNOTY</span>
+                            </td>
+                            <td class="usermenu70">
+                                <span class="btn btn-primary usermenu" style="text-align: left" th:text="*{attendance}"></span>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="usermenutable">
+                        <tr>
+                            <td class="usermenu90"><span><a th:href="@{'/admin/community/view/' + ${community.id}}" class="btn btn-info full">POWRÓT</a></span></td>
+                            <td class="usermenu10"><span><a th:href="@{'/admin/community/member/delete/' + ${member.id}}" class="btn btn-danger full">USUŃ</a></span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+</div>
+</body>
+</html>

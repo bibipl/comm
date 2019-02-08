@@ -76,7 +76,8 @@
 
 .usermenutable {
     width: 100%;
-    border: solid 1px green;
+    border-collapse: collapse;
+    border: 1px solid;
 }
 .full {
     width: 100%;

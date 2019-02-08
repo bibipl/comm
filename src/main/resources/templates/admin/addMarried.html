@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>COMM+</title>
+    <title>MARRIAGE</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
@@ -48,19 +48,19 @@
             <td class="btn btn-primary disabled usermenu100" th:text="'Wybierasz małżonka dla' + ${member.name} + ' ' + ${member.surname}"></td>
         </tr>
     </table>
-    <form th:action="@{'/admin/community/member/addMarriage/' + ${member.id}}" th:object="${member}" method="post">
+    <form th:action="@{/admin/community/member/addMarriage}" th:object="${member}" method="post">
         <div class="container">
             <div class="card">
                 <div class="card-body">
                     <input type="hidden" th:field="*{id}"/>
                     <input type="hidden" th:field="*{communityId}" th:value="${community.id}"/>
                     <table class="usermenutable">
-                        <tr> Here need to correct - show name save value.
+                        <tr>
                             <td class="usermenu30">
                                 <div class="btn btn-primary full" style="text-align: center">MAŁŻONEK</div>
                             </td>
                             <td class="usermenu70">
-                                <select th:field="*{married}" class="form-control btn btn-primary">
+                                <select th:field="*{married}" class="form-control btn btn-secondary">
                                     <option th:each="i : ${marriages}" th:value="${i.id}" th:text="${i.name} + ' ' + ${i.surname}"></option>
                                 </select>
                             </td>

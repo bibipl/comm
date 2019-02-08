@@ -39,5 +39,15 @@ public class Member {
 
     private  String token; // eventually to give acess to group data.
 
- }
+    @Transient
+    boolean doSomeAction = false;
+
+    public boolean isDoSomeAction() {
+        return doSomeAction;
+    }
+    public void setDoSomeAction(boolean doSomeAction) {
+        this.doSomeAction = doSomeAction;
+    }
+}
+
 

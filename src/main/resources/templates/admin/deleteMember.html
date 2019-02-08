@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>MARRIAGE+</title>
+    <title>DELETE</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
@@ -45,12 +45,11 @@
     </table>
     <table class="usermenutable">
         <tr>
-            <td class="btn btn-primary disabled usermenu40" th:text="'Rozdzielić małżeństwo : '"></td>
-            <td class="btn btn-warning disabled usermenu30" th:text="${member1.name} + ' ' + ${member1.surname}"></td>
-            <td class="btn btn-warning disabled usermenu30" th:text="${member2.name} + ' ' + ${member2.surname}"></td>
+            <td class="btn btn-primary disabled usermenu40" th:text="'Czy na pewnoe chcesz usunąć członka wspólnoty : '"></td>
+            <td class="btn btn-warning disabled usermenu60" th:text="${member.name} + ' ' + ${member.surname}"></td>
         </tr>
     </table>
-    <form th:action="@{/admin/community/member/tearMarriage}" th:object="${member1}" method="post">
+    <form th:action="@{/admin/community/member/delete}" th:object="${member}" method="post">
         <div class="container">
             <div class="card">
                 <div class="card-body">
@@ -58,7 +57,7 @@
                     <input type="hidden" th:field="*{communityId}" th:value="${community.id}"/>
                     <table class="usermenutable">
                         <tr>
-                            <td class="usermenu50"><span><input type="submit" class="btn btn-danger full" value="ROZŁĄCZAM"/></span></td>
+                            <td class="usermenu50"><span><input type="submit" class="btn btn-danger full" value="POTWIERDZAM - USUŃ"/></span></td>
                             <td class="usermenu50"><span><a th:href="@{'/admin/community/view/' + ${community.id}}" class="btn btn-success full">POWRÓT</a></span></td>
                         </tr>
                     </table>

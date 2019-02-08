@@ -50,6 +50,9 @@
                 <div class="card-body">
                     <input type="hidden" th:field="*{id}"/>
                     <input type="hidden" th:field="*{communityId}" th:value="${community.id}"/>
+                    <span th:unless="*{married == 0}">
+                      <input type="hidden" th:field="*{sex}">
+                    </span>
                     <table class="usermenutable">
                         <tr>
                             <td class="usermenu10">
@@ -83,11 +86,11 @@
                                 <input class ="full" th:field="*{phone}" type="text"/>
                             </td>
                         </tr>
-                        <tr>
+                        <tr th:if="*{married == 0}">
                             <td class="usermenu10">
                                 <div style="text-align: center">PŁEĆ</div>
                             </td>
-                            <td class="usermenu90">
+                            <td th:if="*{married == 0}" class="usermenu90">
                                 <select th:field="*{sex}" class="form-control">
                                     <option th:each="i : ${sex}" th:value="${i}" th:text="${i}"></option>
                                 </select>
@@ -107,8 +110,10 @@
                     <table class="usermenutable">
                         <tr>
                             <td class="usermenu50"><span><input type="submit" class="btn btn-success full" value="ZAPISZ"/></span></td>
-                            <td class="usermenu50"><span><a th:href="@{'/admin/community/view/' + ${community.id}}" class="btn btn-info full">POWRÓT</a></span></td>
+                            <td class="usermenu40"><span><a th:href="@{'/admin/community/view/' + ${community.id}}" class="btn btn-info full">POWRÓT</a></span></td>
+                            <td class="usermenu10"><span><a th:href="@{'/admin/community/member/delete/' + ${member.id}}" class="btn btn-danger full">USUŃ</a></span></td>
                         </tr>
+
                     </table>
                 </div>
             </div>
