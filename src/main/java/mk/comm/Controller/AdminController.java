@@ -542,12 +542,62 @@ public class AdminController {
         public String emailSome () {
             return"";
     }
+
     @PostMapping("/community/member/emailToSome/{idComm}")
-    public String sendEmaillToMany (@AuthenticationPrincipal CurrentUser currentUser,
-                                    @PathVariable Long idComm,
-                                    @RequestParam (value = "mailIds" , required = false) int[] mailIds,
-                                    @RequestParam (value = "emailText", required = false) String emailText) {
-        return "";
+    public String sendEmaillToMany(@AuthenticationPrincipal CurrentUser currentUser,
+                                   @PathVariable Long idComm,
+                                   @RequestParam(value = "mailIds", required = false) long[] mailIds,
+                                   @RequestParam(value = "emailText", required = false) String emailText,
+                                   @RequestParam(value = "emailHead", required = false) String emailHead) {
+
+        User user = currentUser.getUser();
+        if (user != null) {
+            if (emailHead == null) emailHead = "Brak Tematu";
+            String sentBy = "Email wysłany przez : ";
+            Community community;
+            String communityName = "";
+            if (user.getName() != null) {
+                sentBy = sentBy + user.getName();
+                if (user.getSurname() != null) {
+                    sentBy = sentBy + " " + user.getSurname();
+                }
+            }
+            if (idComm > 0) {
+                community = communityService.findById(idComm);
+                if (community != null) {
+                    communityName = community.getName();
+
+                    if (mailIds != null && mailIds.length > 0) {
+                        for (int i = 0; i < mailIds.length; i++) {
+                            if (mailIds[i] > 0) {
+                                // set full name
+                                Member member = memberService.findById(mailIds[i]);
+                                if (member != null && member.getCommunityId() == idComm) {
+                                    String emailMemb = member.getEmail();
+                                    String memberFullname = member.getName();
+                                    if (memberFullname != null && member.getSurname() != null) {
+                                        memberFullname = memberFullname + ' ' + member.getSurname();
+                                    }
+
+                                    if (emailMemb != null && emailMemb != "") {
+                                        Context context = new Context();
+                                        context.setVariable("header", "Email wspólnotowy. " + communityName);
+                                        context.setVariable("title", "Witaj " + memberFullname + " !");
+                                        context.setVariable("description", emailText);
+                                        context.setVariable("sentBy", sentBy);
+                                        String body = templateEngine.process("templateMail", context);
+                                        emailSender.sendEmail(emailMemb, emailHead, body);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return "redirect:/admin/community/view/" + idComm;
+                }
+            }
+            return "redirect:/admin/communities";
+        }
+        return "redirect:/";
     }
 
     // *** here we check credentioals - if user can modify member
@@ -570,7 +620,6 @@ public class AdminController {
 
     // ****sets model at proper data ready to go to member Add  - model contains member, community, iam,attendace and sex lists***//
     private Model addToModelMemberData (Model model, User user, Member member) {
-
         Community community;
         List<String> attendance = MemberAttr.attendance();
         List<Character> sex = MemberAttr.sex();
