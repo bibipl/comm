@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Wspólnota</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -20,12 +20,12 @@
             </td>
             <td class="usermenu20">
                         <span>
-                            <a class="btn btn-info usermenu"  th:href="@{'/admin/communities'}" th:text="'POWRÓT-WSPÓLNOTY'"></a>
+                            <a class="btn btn-secondary usermenu"  th:href="@{'/admin/community'}" th:text="'POWRÓT-WSPÓLNOTY'"></a>
                         </span>
             </td>
             <td class="usermenu30">
                         <span>
-                            <a class="btn btn-info usermenu"  th:href="@{'/admin/groups'}" th:text="'GRUPY'"></a>
+                            <a class="btn btn-secondary usermenu"  th:href="@{'/admin/groups'}" th:text="'GRUPY'"></a>
                         </span>
             </td>
 
@@ -121,12 +121,12 @@
             </td>
             <td class="usermenu50">
                 <span>
-                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/community/member/emailToSome' + ${community.id}}" th:text="'NAPISZ DO NIEKTÓRYCH'"></a>
+                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/community/member/emailToSome/' + ${community.id}}" th:text="'NAPISZ DO NIEKTÓRYCH'"></a>
                 </span>
             </td>
         </tr>
     </table>
-    <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/communities'}" th:text="'Powrót do listy wspólnot'"></a>
+    <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/community'}" th:text="'Powrót do listy wspólnot'"></a>
 </div>
 </body>
 </html>

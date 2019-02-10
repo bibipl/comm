@@ -13,5 +13,4 @@ public class Community {
     private Long id;
     private String name;
     private Long userId; // not needed but just for safety to check with adminid.
-
 }

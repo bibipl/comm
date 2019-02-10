@@ -1,7 +1,5 @@
 package mk.comm;
 
-import mk.comm.Community.Community; // for first time run needed
-import mk.comm.Member.Member;       // for first time run needed
 import mk.comm.Role.Role;
 import mk.comm.Service.CommunityService;
 import mk.comm.Service.MemberService;
@@ -15,8 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.HashSet;       // for first time run needed
-import java.util.Set;           // for first time run needed
 
 @Controller
 public class Start {

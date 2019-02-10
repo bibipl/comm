@@ -1,4 +1,4 @@
-package mk.comm;
+package mk.comm.Email;
 
 import lombok.Data;
 
