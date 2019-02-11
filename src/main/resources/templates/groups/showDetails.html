@@ -32,10 +32,7 @@
             </td>
             <td class="usermenu20">
                         <span>
-                            <a th:if="${idComm}" class="btn btn-info usermenu"  th:href="@{'/admin/groups/add/' + ${idComm}}">
-                               (+) GRUPA (+)
-                            </a>
-                            <a th:unless="${idComm}" class="btn btn-info usermenu"  th:href="@{'/admin/groups/add/'}">
+                            <a class="btn btn-info usermenu"  th:href="@{'/admin/groups/add/' + ${community.id}}">
                                (+) GRUPA (+)
                             </a>
                         </span>
@@ -49,55 +46,54 @@
             </td>
         </tr>
     </table>
-    <table class="usermenutable">
-        <thead>
-        <tr>
-            <th class="usermenu50">
-                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>GRUPA</button>
-            </th>
-            <th class="usermenu30">
-                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>WSPÓLNOTA</button>
-            </th>
-            <th class="usermenu10">
-                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>EDYTUJ</button>
-            </th>
-            <th class="usermenu10">
-                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>USUŃ</button>
-
-            </th>
-        </tr>
-        </thead>
-        <th:block th:each="group : ${allGroups}">
+    <table><tr><td><button type="button" class="btn btn-lg btn-secondary usermenu" disabled th:text="'GRUPA: ' + ${group.name}"></button></td></tr></table>
+    <th:block th:each="circle : ${group.groupCircles}">
+        <table class="usermenutable">
+            <thead>
+            <tr>
+                <th class="usermenu50">
+                    <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>KRĄG</button>
+                </th>
+                <th class="usermenu30">
+                    <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>CZŁONKOWIE</button>
+                </th>
+                <th class="usermenu10">
+                    <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>EDYTUJ</button>
+                </th>
+                <th class="usermenu10">
+                    <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>USUŃ</button>
+                </th>
+            </tr>
+            </thead>
             <tr>
                 <td class="usermenu50">
                     <span>
-                    <a th:href="@{'/admin/groups/view/' + ${group.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${group.name}"></a>
+                    <a th:href="@{'/admin/circle/view/' + ${group.circle.id}}" class="btn btn-primary usermenu disabled" style="text-align: left" th:text="${circle.number}"></a>
                     </span>
                 </td>
-                <th:block th:each="community : ${communities}">
-                    <td th:if="${group.idCommunity == community.id}" class="usermenu30">
-                        <span>
-                            <a th:href="@{'/admin/community/view/' + ${community.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${community.name}"></a>
-                        </span>
-                    </td>
-                </th:block>
+                <td class="usermenu30">
+                    <span>
+                        <p class="btn btn-primary usermenu" style="text-align: left" th:text="'NA'"></p>
+                    </span>
+                </td>
+
                 <td class="usermenu10">
                     <span>
-                        <a class="btn btn-secondary usermenu" th:href="@{'/admin/groups/edit/' + ${group.id}} ">
+                        <a class="btn btn-secondary usermenu" th:href="@{'/admin/circle/edit/' + ${group.id}} ">
                             EDYTUJ
                         </a>
                     </span>
                 </td>
                 <td class="usermenu10">
                     <span>
-                        <a class="btn btn-danger usermenu" th:href="@{'/admin/groups/delete/' + ${group.id}} ">
+                        <a class="btn btn-danger usermenu" th:href="@{'/admin/circle/delete/' + ${group.id}} ">
                             USUŃ
                         </a>
                     </span>
                 </td>
             </tr>
-        </th:block>
-    </table>
+        </table>
+    </th:block>
     <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/'}" th:text="'Powrót do strony ADMIN'"></a>
 </div>
 </body>

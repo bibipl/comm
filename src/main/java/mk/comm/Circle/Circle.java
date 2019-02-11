@@ -17,6 +17,7 @@ public class Circle {
 
     private int number;
     private Long idGrup;
+    boolean responsible;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "circle_member", joinColumns = @JoinColumn(name = "circle_id"),

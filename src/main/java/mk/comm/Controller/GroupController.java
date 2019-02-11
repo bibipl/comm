@@ -2,6 +2,7 @@ package mk.comm.Controller;
 
 import mk.comm.Community.Community;
 import mk.comm.Group.Group;
+import mk.comm.Member.Member;
 import mk.comm.Service.*;
 import mk.comm.User.CurrentUser;
 import mk.comm.User.User;
@@ -56,6 +57,26 @@ public class GroupController {
         return "redirect:/admin/";
     }
 
+    @GetMapping("/{idComm}")
+    public  String showAllGroupsByCommunity (@AuthenticationPrincipal CurrentUser currentUser,
+                                             @PathVariable Long idComm, Model model) {
+        User user = currentUser.getUser();
+        if (user != null && user.getId() > 0 && idComm > 0) {
+            Community community = communityService.findById(idComm);
+            List<Group> groups = new ArrayList<>();
+            if (community != null) {
+                groups = groupService.findAllByIdCommunity(community.getId());
+                model.addAttribute("idComm", community.getId());
+                model.addAttribute("communities", community);
+                model.addAttribute("allGroups", groups);
+                model.addAttribute("iam", user);
+                return "/groups/showGroups";
+            }
+        }
+        return "redirect:/admin/";
+    }
+
+
     // *** This one shows all members of the community od specified id *****    //
     // ** for safety reason comparing admin's id wiht community user_id ***** //
     @GetMapping("/view/{id}")
@@ -65,6 +86,11 @@ public class GroupController {
         User user = currentUser.getUser();
         if (user != null && user.getId() > 0 && id > 0) {
             Group group = groupService.findById(id);
+            Community community = communityService.findById(group.getIdCommunity());
+            model.addAttribute("group", group);
+            model.addAttribute("community", community);
+            model.addAttribute("iam", user);
+            return "/groups/showDetails";
         ///// ***** further code....
         }
         return "redirect:/admin/community";
@@ -109,4 +135,50 @@ public class GroupController {
         }
         return ("redirect:/admin/groups");
     }
+
+    //***** here we deltete community - we will display community and ask for conformation ****** ///
+    @GetMapping("/delete/{idGroup}")
+    public String communityDeleteForm (@AuthenticationPrincipal CurrentUser currentUser,
+                                       @PathVariable Long idGroup, Model model){
+        User user = currentUser.getUser();
+        Group group = null;
+        if (user != null && user.getId() > 0) {
+            if(idGroup > 0) {
+                group = groupService.findById(idGroup);
+                if(group != null && group.getId() > 0) {
+                    Community community = communityService.findById(group.getIdCommunity());
+                    if (community != null && community.getUserId() >0 && community.getUserId() == user.getId()) {
+                        model.addAttribute("community", community);
+                        model.addAttribute("group", group);
+                        model.addAttribute("iam", user);
+                        return "/groups/deleteGroup";
+                    }
+                    if (group.getIdCommunity() == 0) groupService.delete(group);
+                    return "redirect:/admin/groups";
+                }
+            }
+            return "redirect:/admin/groups/" + group.getIdCommunity();
+        }
+        return "redirect:/admin/groups";
+    }
+
+    // *** here by 'submit' we cave confirmation to delete community ****** //
+    @PostMapping("/delete")
+    public String communityDeleteSave (@AuthenticationPrincipal CurrentUser currentUser,
+                                       @ModelAttribute Group group) {
+
+        User user = currentUser.getUser();
+        Community community = null;
+        if (group.getIdCommunity() != 0) {
+            community = communityService.findById(group.getIdCommunity());
+            if (user != null && user.getId() > 0 && community != null && community.getUserId().equals(user.getId())) {
+                    groupService.delete(group);
+                }
+            }
+        if (community.getId() != 0) {
+            return ("redirect:/admin/groups/" + community.getId());
+        }
+        return "redirect:/admin/groups";
+    }
+
 }

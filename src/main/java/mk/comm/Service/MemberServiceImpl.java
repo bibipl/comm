@@ -55,6 +55,11 @@ public class MemberServiceImpl implements MemberService{
         return memberRepository.findAllByCommunityIdOrderBySurname(id);
     }
 
+    @Override
+    public long countAllByCommunityId(Long idComm) {
+        return memberRepository.countAllByCommunityId(idComm);
+    }
+
 
 }
 
