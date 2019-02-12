@@ -46,14 +46,14 @@
     <form th:action="@{'/admin/community/member/emailToSome/' + ${community.id}}" method="post">
         <table class="usermenutable">
             <thead>
-            <tr>
-                <th class="usermenu90">
-                    <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>CZŁONKOWIE WSPÓLNOTY</button>
-                </th>
-                <th class="usermenu10">
-                    <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>DO KOGO MAIL</button>
-                </th>
-            </tr>
+                <tr>
+                    <th class="usermenu90">
+                        <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>CZŁONKOWIE WSPÓLNOTY</button>
+                    </th>
+                    <th class="usermenu10">
+                        <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>DO KOGO MAIL</button>
+                    </th>
+                </tr>
             </thead>
                 <th:block th:each="member : ${members}">
                     <tr>

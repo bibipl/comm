@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang = "pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>GRUPY</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/my.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'NOWY PODZIAŁ NA KRĘGI'
+    + ' ADMINISTRATOR WSPÓLNOTY : ' + ${iam.name} + ' ' + ${iam.surname}"></button>
+    <table class="usermenutable">
+        <tr>
+            <td class="usermenu20">
+                        <span>
+                            <a class="btn btn-warning usermenu"  th:href="@{'/'}" th:text="'MENU GŁÓWNE'"></a>
+                        </span>
+            </td>
+            <td class="usermenu40">
+                        <span>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/'}" th:text="'STRONA ADMINISTRATORA'"></a>
+                        </span>
+            </td>
+            <td class="usermenu30">
+                        <span>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/groups'}" th:text="'GRUPY'"></a>
+                        </span>
+            </td>
+            <td class="usermenu10">
+                <span>
+                    <form th:action="@{/logout}" method="post" >
+                        <input class="btn btn-warning usermenu" type="submit" value="WYLOGUJ"/>
+                    </form>
+                </span>
+            </td>
+        </tr>
+    </table>
+    <form th:action="@{'/admin/circles/add/' + ${idGroup}}" th:object="${circle}" method="post">
+        <div class="container">
+            <br><br>
+            <div class="card">
+                <div class="card-body">
+                    <input type="hidden" th:field="*{id}"/>
+                    <table class="usermenutable">
+                        <thead>
+                        <tr>
+                            <th class="usermenu90">
+                                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>CZŁONKOWIE WSPÓLNOTY</button>
+                            </th>
+                            <th class="usermenu10">
+                                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>+ DODAJ</button>
+                            </th>
+                        </tr>
+                        </thead>
+                        <th:block th:each="member : ${members}">
+                            <tr>
+                                <td class="usermenu50">
+                            <span class="btn btn-secondary usermenu disabled" style="text-align: left" th:text="${member.name} + ' ' + ${member.surname}" >
+                            </span>
+                                </td>
+                                <td class="usermenu10">
+                            <span class="btn btn-secondary usermenu">
+                                <input type="checkbox" name="circleMembers" th:value="${member.id}"/>
+                            </span>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </table>
+                    <table class="usermenutable">
+                        <tr>
+                            <td class="usermenu100"><span><input type="submit" class="btn btn-success full" value="ZAPISZ"/></span></td>
+                            <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/groups/' + ${idComm}}" th:text="'Powrót do wspólnoty'"></a>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

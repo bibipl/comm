@@ -15,13 +15,9 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long idCircle;
+
+    private Long circleId;
     private LocalDate date;
     private String name;
     private String description;
-
-    public List<String> getEventNames (int id) {
-        List<String> events =Arrays.asList("Litugia Słowa","Eucharystia", "Konwiwencja", "Inne");
-        return events;
-    }
 }

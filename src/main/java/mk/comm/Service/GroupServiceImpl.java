@@ -1,6 +1,8 @@
 package mk.comm.Service;
 
+import mk.comm.Circle.Circle;
 import mk.comm.Group.Group;
+import mk.comm.Repository.CircleRepository;
 import mk.comm.Repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ public class GroupServiceImpl implements GroupService {
 
     @Autowired
     GroupRepository groupRepository;
+    @Autowired
+    CircleService circleService;
 
     @Override
     public void save(Group group) {
@@ -23,6 +27,13 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void delete(Group group) {
+// Delete Cascade - delete all dependent cicrcles if group is to be deleted.
+        List<Circle> circles = circleService.findAllByGroupIdOrderByNumberAsc(group.getId());
+        if (circles != null) {
+            for (Circle circle : circles) {
+                circleService.delete(circle);
+            }
+        }
         groupRepository.delete(group);
     }
 

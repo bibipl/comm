@@ -1,8 +1,8 @@
 package mk.comm.Controller;
 
+import mk.comm.Circle.Circle;
 import mk.comm.Community.Community;
 import mk.comm.Group.Group;
-import mk.comm.Member.Member;
 import mk.comm.Service.*;
 import mk.comm.User.CurrentUser;
 import mk.comm.User.User;
@@ -21,6 +21,8 @@ import java.util.List;
 @RequestMapping("/admin/groups")
 public class GroupController {
 
+    @Autowired
+    CircleService circleService;
     @Autowired
     GroupService groupService;
     @Autowired
@@ -87,7 +89,9 @@ public class GroupController {
         if (user != null && user.getId() > 0 && id > 0) {
             Group group = groupService.findById(id);
             Community community = communityService.findById(group.getIdCommunity());
+            List<Circle> circles = circleService.findAllByGroupIdOrderByNumberAsc(group.getId());
             model.addAttribute("group", group);
+            model.addAttribute("circles", circles);
             model.addAttribute("community", community);
             model.addAttribute("iam", user);
             return "/groups/showDetails";
@@ -114,6 +118,28 @@ public class GroupController {
         }
         return "redirect:/admin/groups";
     }
+
+    @GetMapping("/edit/{idGroup}")
+    public String groupEditForm (@AuthenticationPrincipal CurrentUser currentUser,
+                                @PathVariable Long idGroup, Model model){
+        User user = currentUser.getUser();
+        if ( user != null && user.getId() > 0 && idGroup > 0) {
+            Group group = groupService.findById(idGroup);
+            if (group.getIdCommunity() > 0) {
+                Community selCommunity = communityService.findById(group.getIdCommunity());
+                List<Community> communities = communityService.findAllByUserId(user.getId());
+                if (selCommunity != null && communities != null) {
+                    model.addAttribute("communities", communities);
+                    model.addAttribute("selCommunity", selCommunity);
+                    model.addAttribute("group", group);
+                    model.addAttribute("iam", user);
+                    return "/groups/addGroup";
+                }
+                return "redirect:/admin/groups/" + group.getIdCommunity();
+            }
+        }
+        return "redirect:/admin/groups";
+    }
     //***** continue to add new community (just name and admin's id *****//
     @PostMapping("/add")
     public String groupAddSave (@AuthenticationPrincipal CurrentUser currentUser,
@@ -133,7 +159,7 @@ public class GroupController {
                 groupService.save(group);
             }
         }
-        return ("redirect:/admin/groups");
+        return ("redirect:/admin/groups/" + group.getIdCommunity());
     }
 
     //***** here we deltete community - we will display community and ask for conformation ****** ///
@@ -166,7 +192,6 @@ public class GroupController {
     @PostMapping("/delete")
     public String communityDeleteSave (@AuthenticationPrincipal CurrentUser currentUser,
                                        @ModelAttribute Group group) {
-
         User user = currentUser.getUser();
         Community community = null;
         if (group.getIdCommunity() != 0) {
@@ -180,5 +205,4 @@ public class GroupController {
         }
         return "redirect:/admin/groups";
     }
-
 }

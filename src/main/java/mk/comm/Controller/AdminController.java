@@ -3,7 +3,7 @@ package mk.comm.Controller;
 import mk.comm.Community.Community;
 import mk.comm.Email.Email;
 import mk.comm.Member.Member;
-import mk.comm.Member.MemberAttr;
+import mk.comm.HelpfClasses.MemberAttr;
 import mk.comm.Role.Role;
 import mk.comm.Service.CommunityService;
 import mk.comm.Service.EmailSender;

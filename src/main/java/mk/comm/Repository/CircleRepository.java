@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CircleRepository extends JpaRepository <Circle, Integer> {
     Circle findById (Long id);
+    List<Circle> findAllByGroupIdOrderByNumberAsc (Long idGroup);
+    int countAllByGroupId (Long idGroup);
 }
