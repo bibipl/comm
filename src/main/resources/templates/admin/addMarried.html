@@ -25,13 +25,13 @@
             </td>
             <td class="usermenu30">
                         <span>
-                            <a class="btn btn-success usermenu"  th:href="@{'/admin/community/view/' + ${community.id}}"
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/communities/view/' + ${community.id}}"
                                th:text="'POWRÓT DO LISTY CZŁONKÓW'"></a>
                         </span>
             </td>
             <td class="usermenu20">
                         <span>
-                            <a class="btn btn-info usermenu"  th:href="@{'/admin/community/member/add/' + ${community.id}}" th:text="'DODAJ NOWEGO CZŁONKA (+)'"></a>
+                            <a class="btn btn-info usermenu"  th:href="@{'/admin/communities/member/add/' + ${community.id}}" th:text="'DODAJ NOWEGO CZŁONKA (+)'"></a>
                         </span>
             </td>
             <td class="usermenu10">
@@ -48,7 +48,7 @@
             <td class="btn btn-primary disabled usermenu100" th:text="'Wybierasz małżonka dla' + ${member.name} + ' ' + ${member.surname}"></td>
         </tr>
     </table>
-    <form th:action="@{/admin/community/member/addMarriage}" th:object="${member}" method="post">
+    <form th:action="@{/admin/communities/member/addMarriage}" th:object="${member}" method="post">
         <div class="container">
             <div class="card">
                 <div class="card-body">
@@ -69,7 +69,7 @@
                     <table class="usermenutable">
                         <tr>
                             <td class="usermenu50"><span><input type="submit" class="btn btn-success full" value="ZAPISZ"/></span></td>
-                            <td class="usermenu50"><span><a th:href="@{'/admin/community/view/' + ${community.id}}" class="btn btn-info full">POWRÓT</a></span></td>
+                            <td class="usermenu50"><span><a th:href="@{'/admin/communities/view/' + ${community.id}}" class="btn btn-info full">POWRÓT</a></span></td>
                         </tr>
                     </table>
                 </div>

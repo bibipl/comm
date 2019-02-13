@@ -25,7 +25,7 @@
             </td>
             <td class="usermenu30">
                         <span>
-                            <a class="btn btn-success usermenu"  th:href="@{'/admin/community/view/' + ${community.id}}"
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/communities/view/' + ${community.id}}"
                                th:text="'POWRÓT DO LISTY CZŁONKÓW'"></a>
                         </span>
             </td>
@@ -120,8 +120,8 @@
                     </table>
                     <table class="usermenutable">
                         <tr>
-                            <td class="usermenu90"><span><a th:href="@{'/admin/community/view/' + ${community.id}}" class="btn btn-info full">POWRÓT</a></span></td>
-                            <td class="usermenu10"><span><a th:href="@{'/admin/community/member/delete/' + ${member.id}}" class="btn btn-danger full">USUŃ</a></span></td>
+                            <td class="usermenu90"><span><a th:href="@{'/admin/communities/view/' + ${community.id}}" class="btn btn-info full">POWRÓT</a></span></td>
+                            <td class="usermenu10"><span><a th:href="@{'/admin/communities/member/delete/' + ${member.id}}" class="btn btn-danger full">USUŃ</a></span></td>
                         </tr>
                     </table>
                 </div>

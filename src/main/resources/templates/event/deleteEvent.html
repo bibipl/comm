@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>DELETE</title>
+    <title>GROUP</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
@@ -9,8 +9,6 @@
 </head>
 <body>
 <div class="container">
-    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'WSPÓLNOTA : ' + ${community.name}
-    + ' ADMINISTRATOR WSPÓLNOTY : ' + ${iam.name} + ' ' + ${iam.surname}"></button>
     <table class="usermenutable">
         <tr>
             <td class="usermenu20">
@@ -18,20 +16,14 @@
                             <a class="btn btn-warning usermenu"  th:href="@{'/'}" th:text="'MENU GŁÓWNE'"></a>
                         </span>
             </td>
-            <td class="usermenu20">
+            <td class="usermenu40">
                         <span>
                             <a class="btn btn-success usermenu"  th:href="@{'/admin/'}" th:text="'STRONA ADMINISTRATORA'"></a>
                         </span>
             </td>
             <td class="usermenu30">
                         <span>
-                            <a class="btn btn-success usermenu"  th:href="@{'/admin/communities/view/' + ${community.id}}"
-                               th:text="'POWRÓT DO LISTY CZŁONKÓW'"></a>
-                        </span>
-            </td>
-            <td class="usermenu20">
-                        <span>
-                            <a class="btn btn-info usermenu"  th:href="@{'/admin/communities/member/add/' + ${community.id}}" th:text="'DODAJ NOWEGO CZŁONKA (+)'"></a>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/groups'}" th:text="'GRUPY'"></a>
                         </span>
             </td>
             <td class="usermenu10">
@@ -43,28 +35,31 @@
             </td>
         </tr>
     </table>
-    <table class="usermenutable">
-        <tr>
-            <td class="btn btn-primary disabled usermenu40" th:text="'Czy na pewnoe chcesz usunąć członka wspólnoty : '"></td>
-            <td class="btn btn-warning disabled usermenu60" th:text="${member.name} + ' ' + ${member.surname}"></td>
-        </tr>
-    </table>
-    <form th:action="@{/admin/communities/member/delete}" th:object="${member}" method="post">
+    <form th:action="@{/admin/events/deleteEvent/}" th:object="${event}" method="post">
         <div class="container">
-            <div class="card">
+            <br><br>
+            <div class="card full">
                 <div class="card-body">
                     <input type="hidden" th:field="*{id}"/>
-                    <input type="hidden" th:field="*{communityId}" th:value="${community.id}"/>
+                    <input type="hidden" th:field="*{circleId}"/>
+                    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'ZADANIE: ' + ${event.name}" ></button>
+                    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'DATA : ' + ${event.date}"></button>
+                    <button type="button" class="btn btn-lg btn-primary btn-block" disabled th:text="'OPIS  : ' + ${event.description}"></button>
                     <table class="usermenutable">
                         <tr>
-                            <td class="usermenu50"><span><input type="submit" class="btn btn-danger full" value="POTWIERDZAM - USUŃ"/></span></td>
-                            <td class="usermenu50"><span><a th:href="@{'/admin/communities/view/' + ${community.id}}" class="btn btn-success full">POWRÓT</a></span></td>
+                            <td class="=usermenu50">
+                                <span><input type="submit" class="btn btn-danger" style="width: 100%" value="USUŃ"/></span>
+                            </td>
+                            <td class="usermenu50">
+                                <span><a th:href="@{'/admin/events/' + ${event.circleId}}" class="btn btn-success" style="width: 100%">ANULUJ</a></span>
+                            </td>
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
     </form>
+    <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/communities'}" th:text="'Powrót do listy wspólnot'"></a>
 </div>
 </body>
 </html>

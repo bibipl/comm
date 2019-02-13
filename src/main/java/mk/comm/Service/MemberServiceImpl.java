@@ -1,6 +1,5 @@
 package mk.comm.Service;
 
-import mk.comm.Community.Community;
 import mk.comm.Member.Member;
 import mk.comm.Repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Autowired
     MemberRepository memberRepository;
+
 
     @Override
     public void save(Member member) {

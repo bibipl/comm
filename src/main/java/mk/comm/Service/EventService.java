@@ -8,5 +8,5 @@ public interface EventService {
     void save (Event event);
     void delete (Event event);
     Event findById (Long id);
-    List<Event> findAllByCircleIdOOrderByDate (Long idCircle);
+    List<Event> findAllByCircleIdOrderByDate (Long idCircle);
 }

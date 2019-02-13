@@ -1,11 +1,10 @@
 package mk.comm.Event;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 
 @Data
 @Entity
@@ -17,6 +16,7 @@ public class Event {
     private Long id;
 
     private Long circleId;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private String name;
     private String description;

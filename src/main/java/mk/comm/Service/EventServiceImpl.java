@@ -30,7 +30,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> findAllByCircleIdOOrderByDate(Long idCircle) {
-        return eventRepository.findAllByCircleIdOOrderByDate(idCircle);
+    public List<Event> findAllByCircleIdOrderByDate(Long idCircle) {
+        return eventRepository.findAllByCircleIdOrderByDate(idCircle);
     }
 }

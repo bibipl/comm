@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/community")
+@RequestMapping("/admin/communities")
 public class CommunityController {
 
     @Autowired
@@ -64,7 +64,7 @@ public class CommunityController {
                 }
             }
         }
-        return "redirect:/admin/community";
+        return "redirect:/admin/communities";
     }
     //***** Here we add new community for an admin ****//
     @GetMapping("/add")
@@ -76,13 +76,13 @@ public class CommunityController {
             model.addAttribute("iam", user);
             return "/admin/addCommunity";
         }
-        return "redirect:/admin/community";
+        return "redirect:/admin/communities";
     }
     //***** continue to add new community (just name and admin's id *****//
     @PostMapping("/add")
     public String communityAddSave (@AuthenticationPrincipal CurrentUser currentUser, @ModelAttribute Community community, BindingResult result) {
         if (result.hasErrors()) {
-            return ("redirect:/admin/community/add");
+            return ("redirect:/admin/communities/add");
         }
         String nameError = "Nazwa wspólnoty nie może być pusta !!!";
         if (community.getName() == null || community.getName().equals("") || community.getName().equals(nameError)) {
@@ -94,7 +94,7 @@ public class CommunityController {
             community.setUserId(user.getId());
         }
         communityService.save(community);
-        return ("redirect:/admin/community");
+        return ("redirect:/admin/communities");
     }
 
     // ** Edit community. We go user and comm id and return user and community) ***/
@@ -110,7 +110,7 @@ public class CommunityController {
                 return "/admin/addCommunity";
             }
         }
-        return "redirect:/admin/community";
+        return "redirect:/admin/communities";
 
     }
     //***** here we deltete community - we will display community and ask for conformation ****** ///

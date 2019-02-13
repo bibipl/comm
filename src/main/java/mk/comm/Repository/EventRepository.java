@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Integer> {
     Event findById (Long id);
-    List<Event>  findAllByCircleIdOOrderByDate (Long idCircle);
+    List<Event>  findAllByCircleIdOrderByDate (Long idCircle);
 }

@@ -33,7 +33,7 @@
             </td>
             <td class="usermenu20">
                         <span>
-                            <a class="btn btn-info usermenu"  th:href="@{'/admin/community/add'}">
+                            <a class="btn btn-info usermenu"  th:href="@{'/admin/communities/add'}">
                                (+) WSPÓLNOTA (+)
                             </a>
                         </span>
@@ -66,19 +66,19 @@
             <tr>
                 <td class="usermenu80">
                     <span>
-                    <a th:href="@{'/admin/community/view/' + ${community.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${community.name}"></a>
+                    <a th:href="@{'/admin/communities/view/' + ${community.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${community.name}"></a>
                 </span>
                 </td>
                 <td class="usermenu10">
                     <span>
-                        <a class="btn btn-secondary usermenu" th:href="@{'/admin/community/edit/' + ${community.id}} ">
+                        <a class="btn btn-secondary usermenu" th:href="@{'/admin/communities/edit/' + ${community.id}} ">
                             EDYTUJ
                         </a>
                     </span>
                 </td>
                 <td class="usermenu10">
                     <span>
-                        <a class="btn btn-danger usermenu" th:href="@{'/admin/community/delete/' + ${community.id}} ">
+                        <a class="btn btn-danger usermenu" th:href="@{'/admin/communities/delete/' + ${community.id}} ">
                             USUŃ
                         </a>
                     </span>

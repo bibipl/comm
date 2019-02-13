@@ -25,7 +25,7 @@
             </td>
             <td class="usermenu30">
                         <span>
-                            <a class="btn btn-success usermenu"  th:href="@{'/admin/community/view/' + ${community.id}}"
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/communities/view/' + ${community.id}}"
                                th:text="'POWRÓT DO LISTY CZŁONKÓW'"></a>
                         </span>
             </td>
@@ -43,7 +43,7 @@
             </td>
         </tr>
     </table>
-    <form th:action="@{'/admin/community/member/email/' + ${member.id}}" th:object="${email}" method="post">
+    <form th:action="@{'/admin/communities/member/email/' + ${member.id}}" th:object="${email}" method="post">
         <input type="hidden" th:field="*{emailTo}"/>
         <div class="container">
             <br><br>
@@ -79,7 +79,7 @@
                         </tr>
                         <tr>
                             <td class="usermenu50"><span><input type="submit" class="btn btn-success full" value="WYŚLIJ"/></span></td>
-                            <td class="usermenu50"><span><a th:href="@{'/admin/community/view/' + ${community.id}}" class="btn btn-info full">POWRÓT</a></span></td>
+                            <td class="usermenu50"><span><a th:href="@{'/admin/communities/view/' + ${community.id}}" class="btn btn-info full">POWRÓT</a></span></td>
                         </tr>
                     </table>
                 </div>

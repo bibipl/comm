@@ -20,7 +20,7 @@
             </td>
             <td class="usermenu20">
                         <span>
-                            <a class="btn btn-secondary usermenu"  th:href="@{'/admin/community'}" th:text="'POWRÓT-WSPÓLNOTY'"></a>
+                            <a class="btn btn-secondary usermenu"  th:href="@{'/admin/communities'}" th:text="'POWRÓT-WSPÓLNOTY'"></a>
                         </span>
             </td>
             <td class="usermenu30">
@@ -31,7 +31,7 @@
 
             <td class="usermenu20">
                         <span>
-                            <a class="btn btn-info usermenu"  th:href="@{'/admin/community/member/add/' + ${community.id}}" th:text="'DODAJ NOWEGO CZŁONKA (+)'"></a>
+                            <a class="btn btn-info usermenu"  th:href="@{'/admin/communities/member/add/' + ${community.id}}" th:text="'DODAJ NOWEGO CZŁONKA (+)'"></a>
                         </span>
             </td>
             <td class="usermenu10">
@@ -67,44 +67,44 @@
             <tr>
                 <td class="usermenu50">
                     <span>
-                        <a th:if="${member.married == 0}" th:href="@{'/admin/community/member/view/' + ${member.id}}" class="btn btn-secondary usermenu" style="text-align: left" th:text="${member.name} + ' ' + ${member.surname}"></a>
-                        <a th:unless="${member.married == 0}" th:href="@{'/admin/community/member/view/' + ${member.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${member.name} + ' ' + ${member.surname}"></a>
+                        <a th:if="${member.married == 0}" th:href="@{'/admin/communities/member/view/' + ${member.id}}" class="btn btn-secondary usermenu" style="text-align: left" th:text="${member.name} + ' ' + ${member.surname}"></a>
+                        <a th:unless="${member.married == 0}" th:href="@{'/admin/communities/member/view/' + ${member.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${member.name} + ' ' + ${member.surname}"></a>
                     </span>
                 </td>
                 <td class="usermenu20">
                     <span>
-                        <a th:if="${member.married == 0} and ${member.email != null} and ${member.email != ''}" th:href="@{'/admin/community/member/email/' + ${member.id}}" class="btn btn-secondary usermenu" style="text-align: left" th:text="${member.email}"></a>
-                        <a th:if="${member.married == 0} and (${member.email == null} or ${member.email == ''})" th:href="@{'/admin/community/member/email/' + ${member.id}}" class="btn btn-secondary usermenu" style="text-align: left" th:text="'-'"></a>
-                        <a th:if="${member.married != 0} and ${member.email != null} and ${member.email != ''}" th:href="@{'/admin/community/member/email/' + ${member.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${member.email}"></a>
-                        <a th:if="${member.married != 0} and (${member.email == null} or ${member.email == ''})" th:href="@{'/admin/community/member/email/' + ${member.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="'-'"></a>
+                        <a th:if="${member.married == 0} and ${member.email != null} and ${member.email != ''}" th:href="@{'/admin/communities/member/email/' + ${member.id}}" class="btn btn-secondary usermenu" style="text-align: left" th:text="${member.email}"></a>
+                        <a th:if="${member.married == 0} and (${member.email == null} or ${member.email == ''})" th:href="@{'/admin/communities/member/email/' + ${member.id}}" class="btn btn-secondary usermenu" style="text-align: left" th:text="'-'"></a>
+                        <a th:if="${member.married != 0} and ${member.email != null} and ${member.email != ''}" th:href="@{'/admin/communities/member/email/' + ${member.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${member.email}"></a>
+                        <a th:if="${member.married != 0} and (${member.email == null} or ${member.email == ''})" th:href="@{'/admin/communities/member/email/' + ${member.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="'-'"></a>
                     </span>
                 </td>
                 <td class="usermenu10">
                     <span>
-                        <a th:if="${member.married == 0}" class="btn btn-secondary usermenu" th:href="@{'/admin/community/member/edit/' + ${member.id}} ">
+                        <a th:if="${member.married == 0}" class="btn btn-secondary usermenu" th:href="@{'/admin/communities/member/edit/' + ${member.id}} ">
                             EDYTUJ
                         </a>
-                        <a th:unless="${member.married == 0}" class="btn btn-primary usermenu" th:href="@{'/admin/community/member/edit/' + ${member.id}} ">
+                        <a th:unless="${member.married == 0}" class="btn btn-primary usermenu" th:href="@{'/admin/communities/member/edit/' + ${member.id}} ">
                             EDYTUJ
                         </a>
                     </span>
                 </td>
                 <td class="usermenu10">
                     <span>
-                        <a th:if="${member.married == 0}" class="btn btn-secondary usermenu" th:href="@{'/admin/community/member/addMarriage/' + ${member.id}} ">
+                        <a th:if="${member.married == 0}" class="btn btn-secondary usermenu" th:href="@{'/admin/communities/member/addMarriage/' + ${member.id}} ">
                             +
                         </a>
-                        <a th:unless="${member.married == 0}" class="btn btn-primary usermenu" th:href="@{'/admin/community/member/addMarriage/' + ${member.id}} ">
+                        <a th:unless="${member.married == 0}" class="btn btn-primary usermenu" th:href="@{'/admin/communities/member/addMarriage/' + ${member.id}} ">
                             -
                         </a>
                     </span>
                 </td>
                 <td class="usermenu10">
                     <span>
-                        <a th:if="${member.married == 0}" class="btn btn-secondary usermenu" th:href="@{'/admin/community/member/view/' + ${member.id}} ">
+                        <a th:if="${member.married == 0}" class="btn btn-secondary usermenu" th:href="@{'/admin/communities/member/view/' + ${member.id}} ">
                             SZCZEGÓŁY
                         </a>
-                        <a th:unless="${member.married == 0}" class="btn btn-primary usermenu" th:href="@{'/admin/community/member/view/' + ${member.id}} ">
+                        <a th:unless="${member.married == 0}" class="btn btn-primary usermenu" th:href="@{'/admin/communities/member/view/' + ${member.id}} ">
                             SZCZEGÓŁY
                         </a>
                     </span>
@@ -116,17 +116,17 @@
         <tr>
             <td class="usermenu50">
                 <span>
-                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/community/member/emailToAll/' + ${community.id}}" th:text="'NAPISZ DO WSZYSTKICH'"></a>
+                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/communities/member/emailToAll/' + ${community.id}}" th:text="'NAPISZ DO WSZYSTKICH'"></a>
                 </span>
             </td>
             <td class="usermenu50">
                 <span>
-                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/community/member/emailToSome/' + ${community.id}}" th:text="'NAPISZ DO NIEKTÓRYCH'"></a>
+                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/communities/member/emailToSome/' + ${community.id}}" th:text="'NAPISZ DO NIEKTÓRYCH'"></a>
                 </span>
             </td>
         </tr>
     </table>
-    <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/community'}" th:text="'Powrót do listy wspólnot'"></a>
+    <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/communities'}" th:text="'Powrót do listy wspólnot'"></a>
 </div>
 </body>
 </html>

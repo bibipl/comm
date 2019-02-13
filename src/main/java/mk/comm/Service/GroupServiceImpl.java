@@ -2,7 +2,6 @@ package mk.comm.Service;
 
 import mk.comm.Circle.Circle;
 import mk.comm.Group.Group;
-import mk.comm.Repository.CircleRepository;
 import mk.comm.Repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

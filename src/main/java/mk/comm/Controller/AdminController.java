@@ -3,7 +3,7 @@ package mk.comm.Controller;
 import mk.comm.Community.Community;
 import mk.comm.Email.Email;
 import mk.comm.Member.Member;
-import mk.comm.HelpfClasses.MemberAttr;
+import mk.comm.Member.MemberAttr;
 import mk.comm.Role.Role;
 import mk.comm.Service.CommunityService;
 import mk.comm.Service.EmailSender;
@@ -52,7 +52,7 @@ public class AdminController {
     }
 
     // sets model at proper data ready to go to member Add  - model contains member, community, iam,attendace and sex lists***//
-    @GetMapping ("/community/member/add/{idComm}")
+    @GetMapping ("/communities/member/add/{idComm}")
     public String memberAdd (@AuthenticationPrincipal CurrentUser currentUser,
                              @PathVariable Long idComm, Model model){
         User user = currentUser.getUser();
@@ -66,12 +66,12 @@ public class AdminController {
               return "/admin/addMember";
            }
         }
-        return "redirect:/admin/community/view/" + idComm;
+        return "redirect:/admin/communities/view/" + idComm;
     }
 
 
 
-    @PostMapping("/community/member/add")
+    @PostMapping("/communities/member/add")
     public String memberSave (@AuthenticationPrincipal CurrentUser currentUser,
                               @Valid @ModelAttribute Member member, BindingResult result, Model model){
 
@@ -95,14 +95,14 @@ public class AdminController {
         }
         if (admHasRights) {
             memberService.save(member); // we do a lot of efforts not to let unauthorized save.
-            return "redirect:/admin/community/view/" +idComm;
+            return "redirect:/admin/communities/view/" +idComm;
         }
 
         return "redirect:/admin/communities";
     }
 
 
-    @GetMapping("/community/member/edit/{idMemb}")
+    @GetMapping("/communities/member/edit/{idMemb}")
     public String memberEdit (@AuthenticationPrincipal CurrentUser currentUser,
                               @PathVariable Long idMemb, Model model){
         User user = currentUser.getUser();
@@ -115,7 +115,7 @@ public class AdminController {
                     return "/admin/addMember";
                 }
                 if (member.getCommunityId() >0) {
-                    return "redirect:/admin/community/view/" + member.getCommunityId();
+                    return "redirect:/admin/communities/view/" + member.getCommunityId();
                 }
             }
 
@@ -124,7 +124,7 @@ public class AdminController {
     }
 
 
-    @GetMapping("/community/member/addMarriage/{idMemb}")
+    @GetMapping("/communities/member/addMarriage/{idMemb}")
     public String memberMarriage (@AuthenticationPrincipal CurrentUser currentUser, @PathVariable Long idMemb, Model model){
         User user = currentUser.getUser();
         Member member = null;
@@ -151,7 +151,7 @@ public class AdminController {
                         // get all free men
                         marriages = memberService.findAllNotMarriedBySex('M');
                     } else {
-                        if (community.getId() >0)return "redirect:admin/community/view/community/"+community.getId();
+                        if (community.getId() >0)return "redirect:admin/communities/view/communities/"+community.getId();
                         else return "redirect:/admin/communities";
                     }
                     if (marriages != null) {
@@ -167,7 +167,7 @@ public class AdminController {
         return "redirect:/admin/communities";
     }
 
-    @PostMapping("/community/member/addMarriage")
+    @PostMapping("/communities/member/addMarriage")
     public String memberMarriageSave (@AuthenticationPrincipal CurrentUser currentUser,
                                       @ModelAttribute Member member){
         Member member1 = null;
@@ -181,7 +181,7 @@ public class AdminController {
                     memberService.save(member);
                     memberService.save(member1);
                     if (member.getCommunityId() > 0) {
-                        return "redirect:/admin/community/view/" + member.getCommunityId();
+                        return "redirect:/admin/communities/view/" + member.getCommunityId();
                     } else {
                         return "redirect:/admin/communities";
                     }
@@ -199,13 +199,13 @@ public class AdminController {
             memberService.save(member);
         }
         if (member.getCommunityId() > 0) {
-            return "redirect:/admin/community/view/" + member.getCommunityId();
+            return "redirect:/admin/communities/view/" + member.getCommunityId();
         } else {
             return "redirect:/admin/communities";
         }
     }
 
-    @PostMapping("/community/member/tearMarriage")
+    @PostMapping("/communities/member/tearMarriage")
     public String tearMarriage (@AuthenticationPrincipal CurrentUser currentUser,
                                 @ModelAttribute Member member1) {
       User user = currentUser.getUser();
@@ -224,13 +224,13 @@ public class AdminController {
               }
           }
           if (member1.getCommunityId() > 0) {
-              return "redirect:/admin/community/view/" + member1.getCommunityId();
+              return "redirect:/admin/communities/view/" + member1.getCommunityId();
           }
       }
         return "redirect:/admin/communities";
     }
 
-    @GetMapping("/community/member/view/{idMember}")
+    @GetMapping("/communities/member/view/{idMember}")
     public String memberView (@AuthenticationPrincipal CurrentUser currentUser,
                               @PathVariable Long idMember, Model model){
         if (idMember > 0) {
@@ -257,7 +257,7 @@ public class AdminController {
         }
         return "";
     }
-    @GetMapping("/community/member/delete/{idMember}")
+    @GetMapping("/communities/member/delete/{idMember}")
     public String memberDeleteForm (@AuthenticationPrincipal CurrentUser currentUser,
                                     @PathVariable Long idMember, Model model) {
         if (idMember > 0) {
@@ -274,7 +274,7 @@ public class AdminController {
 
             }
             if (member.getCommunityId() > 0) {
-                return "redirect:/admin/community/view/" + member.getCommunityId();
+                return "redirect:/admin/communities/view/" + member.getCommunityId();
             }
         }
         return"redirect:/admin/communities";
@@ -296,12 +296,12 @@ public class AdminController {
 
             }
         if (member1.getCommunityId() > 0) {
-            return "redirect:/admin/community/view/" + member1.getCommunityId();
+            return "redirect:/admin/communities/view/" + member1.getCommunityId();
         }
         return "redirect:/admin/communities";
     }
 
-    @GetMapping("/community/member/email/{idMemb}")
+    @GetMapping("/communities/member/email/{idMemb}")
     public String sendEmailForm (@AuthenticationPrincipal CurrentUser currentUser, @PathVariable Long idMemb, Model model) {
         User user = currentUser.getUser();
         if (idMemb >0) {
@@ -324,13 +324,13 @@ public class AdminController {
                     return "/email/emailToOne";
                 }
                 if (member.getCommunityId() > 0) {
-                    return "redirect:/admin/community/view/" + member.getCommunityId();
+                    return "redirect:/admin/communities/view/" + member.getCommunityId();
                 }
             }
         }
       return "redirect:/admin/communities";
     }
-    @PostMapping("/community/member/email/{idMemb}")
+    @PostMapping("/communities/member/email/{idMemb}")
     public String sendEmailAction (@AuthenticationPrincipal CurrentUser currentUser,
                                    @PathVariable Long idMemb, @ModelAttribute Email email) {
         User user = currentUser.getUser();
@@ -377,13 +377,13 @@ public class AdminController {
                    }
                 }
                 if (member.getCommunityId() >0) {
-                    return "redirect:/admin/community/view/" + member.getCommunityId();
+                    return "redirect:/admin/communities/view/" + member.getCommunityId();
                 }
             }
         }
         return "redirect:/admin/communities";
     }
-    @GetMapping("/community/member/emailToAll/{idComm}")
+    @GetMapping("/communities/member/emailToAll/{idComm}")
     public String emailAll (@AuthenticationPrincipal CurrentUser currentUser,
                             @PathVariable Long idComm, Model model) {
         User user = currentUser.getUser();
@@ -405,7 +405,7 @@ public class AdminController {
         }
         return "redirect:/admin/communities";
     }
-    @GetMapping("/community/member/emailToSome/{idComm}")
+    @GetMapping("/communities/member/emailToSome/{idComm}")
         public String emailSome (@AuthenticationPrincipal CurrentUser currentUser,
                                  @PathVariable Long idComm, Model model) {
         User user = currentUser.getUser();
@@ -428,7 +428,7 @@ public class AdminController {
         return "redirect:/admin/communities";
     }
 
-    @PostMapping("/community/member/emailToSome/{idComm}")
+    @PostMapping("/communities/member/emailToSome/{idComm}")
     public String sendEmaillToMany(@AuthenticationPrincipal CurrentUser currentUser,
                                    @PathVariable Long idComm,
                                    @RequestParam(value = "mailIds", required = false) long[] mailIds,
@@ -477,7 +477,7 @@ public class AdminController {
                             }
                         }
                     }
-                    return "redirect:/admin/community/view/" + idComm;
+                    return "redirect:/admin/communities/view/" + idComm;
                 }
             }
             return "redirect:/admin/communities";

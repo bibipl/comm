@@ -25,7 +25,7 @@
             </td>
             <td class="usermenu20">
                         <span>
-                            <a class="btn btn-secondary usermenu"  th:href="@{'/admin/community'}">
+                            <a class="btn btn-secondary usermenu"  th:href="@{'/admin/communities'}">
                               WSPÓLNOTY
                             </a>
                         </span>
@@ -124,15 +124,33 @@
                 </tr>
             </th:block>
         </table>
-        <span th:if="${events}">
+        <table th:if="${events}" class="usermenutable">
             <th:block th:each="event : ${events}">
-
+                <tr th:if="${event.circleId == circle.id}">
+                    <td class="usermenu20" >
+                        <span class="btn btn-secondary usermenu disabled" style="text-align: left" th:text="${event.name}"></span>
+                    </td>
+                    <td class="usermenu20" >
+                        <span class="btn btn-secondary usermenu disabled" style="text-align: left" th:text="${event.date}"></span>
+                    </td>
+                    <td class="usermenu40" >
+                        <span class="btn btn-secondary usermenu disabled" style="text-align: left" th:text="${event.description}"></span>
+                    </td>
+                    <td class="usermenu10" >
+                        <a class="btn btn-secondary usermenu" style="text-align: center" th:text="'EDYCJA'" th:href="@{'/admin/events/editEvent/' + ${event.id}}"></a>
+                    </td>
+                    <td class="usermenu10" >
+                        <span>
+                            <a class="btn btn-danger usermenu" style="text-align: center" th:text="'USUŃ'" th:href="@{'/admin/events/deleteEvent/' + ${event.id}} "></a>
+                        </span>
+                    </td>
+                </tr>
             </th:block>
-        </span>
+        </table>
         <table class="usermenutable">
             <tr>
                 <td>
-                    <a class="btn btn-secondary usermenu" style="text-align: center" th:text="'(+) DODAJ NOWE ZADANIE (+)'" th:href="@{'/admin/events/addEvent/' + ${circle.id}} "></a>
+                    <a class="btn btn-secondary usermenu" style="text-align: center" th:text="'(+) DODAJ NOWE ZADANIE (+)'" th:href="@{'/admin/events/add/' + ${circle.id}} "></a>
                 </td>
             </tr>
             <tr>

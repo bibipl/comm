@@ -20,7 +20,7 @@
             </td>
             <td class="usermenu20">
                         <span>
-                            <a class="btn btn-info usermenu"  th:href="@{'/admin/community'}" th:text="'POWRÓT-WSPÓLNOTY'"></a>
+                            <a class="btn btn-info usermenu"  th:href="@{'/admin/communities'}" th:text="'POWRÓT-WSPÓLNOTY'"></a>
                         </span>
             </td>
             <td class="usermenu30">
@@ -31,7 +31,7 @@
 
             <td class="usermenu20">
                         <span>
-                            <a class="btn btn-info usermenu"  th:href="@{'/admin/community/member/add/' + ${community.id}}" th:text="'DODAJ NOWEGO CZŁONKA (+)'"></a>
+                            <a class="btn btn-info usermenu"  th:href="@{'/admin/communities/member/add/' + ${community.id}}" th:text="'DODAJ NOWEGO CZŁONKA (+)'"></a>
                         </span>
             </td>
             <td class="usermenu10">
@@ -43,7 +43,7 @@
             </td>
         </tr>
     </table>
-    <form th:action="@{'/admin/community/member/emailToSome/' + ${community.id}}" method="post">
+    <form th:action="@{'/admin/communities/member/emailToSome/' + ${community.id}}" method="post">
         <table class="usermenutable">
             <thead>
                 <tr>
@@ -103,17 +103,17 @@
         <tr>
             <td class="usermenu50">
                 <span>
-                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/community/member/emailToAll/' + ${community.id}}" th:text="'NAPISZ DO WSZYSTKICH'"></a>
+                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/communities/member/emailToAll/' + ${community.id}}" th:text="'NAPISZ DO WSZYSTKICH'"></a>
                 </span>
             </td>
             <td class="usermenu50">
                 <span>
-                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/community/member/emailToSome/' +  ${community.id}}" th:text="'NAPISZ DO NIEKTÓRYCH'"></a>
+                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/communities/member/emailToSome/' +  ${community.id}}" th:text="'NAPISZ DO NIEKTÓRYCH'"></a>
                 </span>
             </td>
         </tr>
     </table>
-    <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/community/view/' + ${community.id}}" th:text="'Powrót do wspólnoty'"></a>
+    <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/communities/view/' + ${community.id}}" th:text="'Powrót do wspólnoty'"></a>
 </div>
 </body>
 </html>

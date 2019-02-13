@@ -2,6 +2,7 @@ package mk.comm.Controller;
 
 import mk.comm.Circle.Circle;
 import mk.comm.Community.Community;
+import mk.comm.Event.Event;
 import mk.comm.Group.Group;
 import mk.comm.Service.*;
 import mk.comm.User.CurrentUser;
@@ -21,6 +22,8 @@ import java.util.List;
 @RequestMapping("/admin/groups")
 public class GroupController {
 
+    @Autowired
+    EventService eventService;
     @Autowired
     CircleService circleService;
     @Autowired
@@ -78,18 +81,26 @@ public class GroupController {
         return "redirect:/admin/";
     }
 
-
     // *** This one shows all members of the community od specified id *****    //
     // ** for safety reason comparing admin's id wiht community user_id ***** //
-    @GetMapping("/view/{id}")
+    @GetMapping("/view/{idGroup}")
     public String communityView (@AuthenticationPrincipal CurrentUser currentUser,
-                                 @PathVariable Long id,
+                                 @PathVariable Long idGroup,
                                  Model model){
         User user = currentUser.getUser();
-        if (user != null && user.getId() > 0 && id > 0) {
-            Group group = groupService.findById(id);
+        if (user != null && user.getId() > 0 && idGroup > 0) {
+            Group group = groupService.findById(idGroup);
             Community community = communityService.findById(group.getIdCommunity());
             List<Circle> circles = circleService.findAllByGroupIdOrderByNumberAsc(group.getId());
+            List<Event> events = new ArrayList<>();
+            if (circles != null) {
+                for (Circle circle : circles) {
+                   List<Event> tempListEvents = eventService.findAllByCircleIdOrderByDate(circle.getId());
+                   events.addAll(tempListEvents);
+                }
+            }
+
+            model.addAttribute("events", events);
             model.addAttribute("group", group);
             model.addAttribute("circles", circles);
             model.addAttribute("community", community);

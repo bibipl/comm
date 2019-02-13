@@ -25,7 +25,7 @@
             </td>
             <td class="usermenu20">
                         <span>
-                            <a class="btn btn-secondary usermenu"  th:href="@{'/admin/community'}">
+                            <a class="btn btn-secondary usermenu"  th:href="@{'/admin/communities'}">
                               WSPÓLNOTY
                             </a>
                         </span>
@@ -77,7 +77,7 @@
                 <th:block th:each="community : ${communities}">
                     <td th:if="${group.idCommunity == community.id}" class="usermenu30">
                         <span>
-                            <a th:href="@{'/admin/community/view/' + ${community.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${community.name}"></a>
+                            <a th:href="@{'/admin/communities/view/' + ${community.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${community.name}"></a>
                         </span>
                     </td>
                 </th:block>

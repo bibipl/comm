@@ -1,4 +1,4 @@
-package mk.comm.HelpfClasses;
+package mk.comm.Member;
 
 import java.util.Arrays;
 import java.util.List;
