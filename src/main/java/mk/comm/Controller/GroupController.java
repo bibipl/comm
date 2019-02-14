@@ -88,7 +88,8 @@ public class GroupController {
                                  @PathVariable Long idGroup,
                                  Model model){
         User user = currentUser.getUser();
-        if (user != null && user.getId() > 0 && idGroup > 0) {
+
+        if (idGroup > 0 && checkAminCredential(user, idGroup)) {
             Group group = groupService.findById(idGroup);
             Community community = communityService.findById(group.getIdCommunity());
             List<Circle> circles = circleService.findAllByGroupIdOrderByNumberAsc(group.getId());
@@ -215,5 +216,21 @@ public class GroupController {
             return ("redirect:/admin/groups/" + community.getId());
         }
         return "redirect:/admin/groups";
+    }
+    // *** checks if user has right to change anything in the "circle".
+    // *** additionally confirms that community, group and circle are not empty and have not empty id to parent.
+    private boolean checkAminCredential (User user, Long idGroup) {
+        boolean credential = false;
+        if (user != null && idGroup >0) {
+            Group group = groupService.findById(idGroup);
+            if (group != null && group.getIdCommunity() > 0) {
+                Community community = communityService.findById(group.getIdCommunity());
+                if (community != null && community.getUserId().equals(user.getId())) {
+                    credential = true;
+                }
+            }
+
+        }
+        return credential;
     }
 }

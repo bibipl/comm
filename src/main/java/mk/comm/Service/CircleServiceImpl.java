@@ -18,6 +18,7 @@ public class CircleServiceImpl implements CircleService {
 
     @Override
     public void save(Circle circle) {
+        circle = Circle.SortByName(circle);
         circleRepository.save(circle);
     }
 
@@ -40,8 +41,6 @@ public class CircleServiceImpl implements CircleService {
     public int countAllByGroupId(Long idGroup) {
         return circleRepository.countAllByGroupId( idGroup);
     }
-
-
 }
 
 

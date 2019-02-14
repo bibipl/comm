@@ -96,22 +96,23 @@
             <th:block th:each="member : ${circle.members}">
                 <tr>
                     <td class="usermenu30" >
-                        <span th:if="${member.id == circle.responsible}" class="btn btn-primary usermenu disabled" style="text-align: left" th:text="${member.name} + ' ' + ${member.surname} + ' [ODP]'"></span>
-                        <span th:unless="${member.id == circle.responsible}" class="btn btn-outline-secondary usermenu disabled" style="text-align: left" th:text="${member.name} + ' ' + ${member.surname}"></span>
+                        <span th:if="${member.id == circle.responsible or member.married == circle.responsible}" class="btn btn-primary usermenu disabled" style="text-align: left" th:text="${member.name} + ' ' + ${member.surname} + ' [ODP]'"></span>
+                        <span th:if="${member.id != circle.responsible and member.married != circle.responsible}" class="btn btn-outline-secondary usermenu disabled" style="text-align: left" th:text="${member.name} + ' ' + ${member.surname}"></span>
                     </td>
                     <td class="usermenu30" >
-                        <span th:if="${member.id == circle.responsible}" class="btn btn-primary usermenu disabled" style="text-align: left" th:text="${member.email}"></span>
-                        <span th:unless="${member.id == circle.responsible}" class="btn btn-outline-secondary usermenu disabled" style="text-align: left" th:text="${member.email}"></span>
+                        <span th:if="${member.id == circle.responsible or member.married == circle.responsible}" class="btn btn-primary usermenu disabled" style="text-align: left" th:text="${member.email}"></span>
+                        <span th:if="${member.id != circle.responsible and member.married != circle.responsible}" class="btn btn-outline-secondary usermenu disabled" style="text-align: left" th:text="${member.email}"></span>
                     </td>
                     <td class="usermenu20" >
-                        <span th:if="${member.id == circle.responsible}" class="btn btn-primary usermenu disabled" style="text-align: left" th:text="${member.phone}"></span>
-                        <span th:unless="${member.id == circle.responsible}" class="btn btn-outline-secondary usermenu disabled" style="text-align: left" th:text="${member.phone}"></span>
+                        <span th:if="${member.id == circle.responsible or member.married == circle.responsible}" class="btn btn-primary usermenu disabled" style="text-align: left" th:text="${member.phone}"></span>
+                        <span th:if="${member.id != circle.responsible and member.married != circle.responsible}" class="btn btn-outline-secondary usermenu disabled" style="text-align: left" th:text="${member.phone}"></span>
                     </td>
                     <td class="usermenu10" >
-                        <span th:if="${member.id == circle.responsible}" class="btn btn-danger usermenu disabled" th:text="'X'"></span>
-                        <span th:unless="${member.id == circle.responsible}">
-                            <a class="btn btn-outline-secondary usermenu" style="text-align: center" th:text="'+'" th:href="@{'/admin/circles/chengeResp/' + ${circle.id} + '/' + ${member.id}} "></a>
+                        <span th:if="${member.id == circle.responsible or member.married == circle.responsible}" class="btn btn-primary usermenu disabled" th:text="'X'"></span>
+                        <span th:if="${member.id != circle.responsible and member.married != circle.responsible}">
+                            <a class="btn btn-outline-secondary usermenu" style="text-align: center" th:text="'+'" th:href="@{'/admin/circles/changeResp/' + ${circle.id} + '/' + ${member.id}} "></a>
                         </span>
+
                     </td>
                     <td class="usermenu10" >
                         <span th:if="${member.id == circle.responsible}">

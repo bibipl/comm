@@ -96,10 +96,55 @@ public class CircleController {
             circle.setResponsible(members.get(0).getId()); /// here to be taken by checkbox - save circle and go to choose responsible, with checked (0)
             circle.setMembers(members);
             circle.setGroupId(group.getId());
+            if (circle.getId() == null) circleService.save(circle); // no id's save not properly sorted we have to save 2x
             circleService.save(circle);
+
         }
         if (idGroup >0 )
             return "redirect:/admin/groups/view/" + idGroup;
         return "redirect:admin/groups";
     }
+
+    @GetMapping("/changeResp/{idCircle}/{idMember}")
+    public String changeResp (@AuthenticationPrincipal CurrentUser currentUser,
+                              @PathVariable Long idCircle, @PathVariable Long idMember,
+                              Model model) {
+        User user = currentUser.getUser();
+        if (checkAminCredential (user, idCircle)) {
+            Circle circle = circleService.findById(idCircle);
+            if (idMember > 0) {
+                Member memberRespNew = memberService.findById(idMember);
+                if (memberRespNew != null) {
+                    if (memberRespNew.getMarried() >0 && memberRespNew.getSex() == 'K') {
+                        idMember = memberRespNew.getMarried();
+                    }
+                    circle.setResponsible(idMember);
+                    circleService.save(circle);
+                    return "redirect:/admin/groups/view/" + circle.getGroupId();
+                }
+            }
+        }
+
+        return "redirect:/";
+    }
+
+    // *** checks if user has right to change anything in the "circle".
+    // *** additionally confirms that community, group and circle are not empty and have not empty id to parent.
+    private boolean checkAminCredential (User user, Long idCircle) {
+        boolean credential = false;
+        if (user != null && idCircle >0) {
+            Circle circle = circleService.findById(idCircle);
+            if (circle != null && circle.getGroupId() > 0) {
+                Group group = groupService.findById(circle.getGroupId());
+                if (group != null && group.getIdCommunity() > 0) {
+                    Community community = communityService.findById(group.getIdCommunity());
+                    if (community != null && community.getUserId() == user.getId()) {
+                        credential = true;
+                    }
+                }
+            }
+        }
+        return credential;
+    }
+
 }
