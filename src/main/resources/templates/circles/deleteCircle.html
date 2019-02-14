@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CIRCLE</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/my.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <table class="usermenutable">
+        <tr>
+            <td class="usermenu20">
+                        <span>
+                            <a class="btn btn-warning usermenu"  th:href="@{'/'}" th:text="'MENU GŁÓWNE'"></a>
+                        </span>
+            </td>
+            <td class="usermenu40">
+                        <span>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/'}" th:text="'STRONA ADMINISTRATORA'"></a>
+                        </span>
+            </td>
+            <td class="usermenu30">
+                        <span>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/groups/view/' + ${circle.groupId}}" th:text="'KRĘGI'"></a>
+                        </span>
+            </td>
+            <td class="usermenu10">
+                <span>
+                    <form th:action="@{/logout}" method="post" >
+                        <input class="btn btn-warning usermenu" type="submit" value="WYLOGUJ"/>
+                    </form>
+                </span>
+            </td>
+        </tr>
+    </table>
+    <table class="usermenutable">
+        <tr>
+            <td class="usermenu100" >
+                <span class="btn btn-lg btn-success usermenu disabled" th:text="'KRĄG NUMER: ' + ${circle.number}"></span>
+            </td>
+        </tr>
+    </table>
+    <table class="usermenutable">
+        <thead>
+        <tr>
+            <th class="usermenu30" >
+                <span class="btn btn-secondary usermenu disabled" style="text-align: left" th:text="'Imię i Nazwisko'"></span>
+            </th>
+            <th class="usermenu30" >
+                <span class="btn btn-secondary usermenu disabled" style="text-align: left" th:text="'e-Mail'"></span>
+            </th>
+            <th class="usermenu20" >
+                <span class="btn btn-secondary usermenu disabled" style="text-align: left" th:text="'Numer telefonu'"></span>
+            </th>
+        </tr>
+        </thead>
+        <th:block th:each="member : ${circle.members}">
+            <tr>
+                <td class="usermenu30" >
+                    <span th:if="${member.id == circle.responsible or member.married == circle.responsible}" class="btn btn-primary usermenu disabled" style="text-align: left" th:text="${member.name} + ' ' + ${member.surname} + ' [ODP]'"></span>
+                    <span th:if="${member.id != circle.responsible and member.married != circle.responsible}" class="btn btn-outline-secondary usermenu disabled" style="text-align: left" th:text="${member.name} + ' ' + ${member.surname}"></span>
+                </td>
+                <td class="usermenu30" >
+                    <span th:if="${member.id == circle.responsible or member.married == circle.responsible}" class="btn btn-primary usermenu disabled" style="text-align: left" th:text="${member.email}"></span>
+                    <span th:if="${member.id != circle.responsible and member.married != circle.responsible}" class="btn btn-outline-secondary usermenu disabled" style="text-align: left" th:text="${member.email}"></span>
+                </td>
+                <td class="usermenu20" >
+                    <span th:if="${member.id == circle.responsible or member.married == circle.responsible}" class="btn btn-primary usermenu disabled" style="text-align: left" th:text="${member.phone}"></span>
+                    <span th:if="${member.id != circle.responsible and member.married != circle.responsible}" class="btn btn-outline-secondary usermenu disabled" style="text-align: left" th:text="${member.phone}"></span>
+                </td>
+            </tr>
+        </th:block>
+    </table>
+    <form th:action="@{/admin/circles/deleteCircle}" method="post">
+        <div class="container">
+            <br><br>
+            <span class="btn btn-lg btn-secondary btn-block disabled" th:text="'NA PEWNO CHCESZ UNUNĄĆ KRĄG NR: ' + ${circle.number}"></span>
+            <div class="card full">
+                <div class="card-body">
+                    <input type="hidden" th:field="${circle.id}"/>
+                    <table class="usermenutable">
+                        <tr>
+                            <td class="=usermenu50">
+                                <span><input type="submit" class="btn btn-danger" style="width: 100%" value="USUŃ"/></span>
+                            </td>
+                            <td class="usermenu50">
+                                <span><a th:href="@{'/admin/groups/view/' + ${circle.groupId}}" class="btn btn-success" style="width: 100%">ANULUJ</a></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <table class="usermenutable">
+                    <td class="=usermenu100">
+                        <span>
+                            <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/groups/view/' + ${circle.groupId}}" th:text="'Powrót do listy kręgów'"></a>
+                        </span>
+                    </td>
+                </table>
+            </div>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>
