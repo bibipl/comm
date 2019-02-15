@@ -36,32 +36,28 @@ public class Circle {
                     boolean found = false;
                     for (Member husband : circle.getMembers()) {
                         if (husband.getMarried() == member.getId()) {
-                            marriedWomen.add(member);
                             found = true;
                             break;
                         }
                     }
-                    if (!found) {theRest.add(member);}
+                    if (found) {marriedWomen.add(member);}
+                    else{theRest.add(member);}
                 } else {
                     theRest.add(member);
                 }
             }
-            // *** only men and women without husband in the circle. lest sort.
+            // *** only men and women without husband in the circle. lest sort (reversal so in db will be order ok)
             int size = theRest.size();
             while (size > 1) {
                 Member member1 = theRest.get(0);
                 for (int j = 1; j < size ; j++) {
                     Member member2 = theRest.get(j);
-                    if ((member1.getSurname().compareTo(member2.getSurname()) < 0 && member2.getId() != circle.getResponsible())
-                            || member1.getId() == circle.getResponsible())
+                    if ((member1.getId().equals(circle.getResponsible())) || (!member2.getId().equals(circle.getResponsible()) && member1.getSurname().compareTo(member2.getSurname()) < 0))
                     {
                         theRest.remove(member1);
                         theRest.add(j, member1);
-                        member1 = member2;
                     } else {
                         member1 = member2;
-
-
                     }
                 }
                 size--;

@@ -250,14 +250,22 @@ public class CircleController {
     // it check user if has credential to make a change.
     private void addCircleAction(User user, Long idGroup, long[] circleMembers, Circle circle) {
         if ( checkAdminCreentialGroup(user, idGroup) && circleMembers != null) {
-            Group group = groupService.findById(idGroup); // Może id group też Request Param przekazać ?
+            Group group = groupService.findById(idGroup);
+            // numeracja k©egów zmienić na max number +1 !!!!!
             int numOfCircles = circleService.countAllByGroupId(group.getId());
+            // Id circle doesnot exist yet - give it a number max + 1
             if (circle.getNumber() == 0) {
                 circle.setNumber(numOfCircles + 1);
             }
+            // Add all new members to the circle
             for (long idMemb : circleMembers) {
                 Member member = memberService.findById(idMemb);
-                circle.getMembers().add(member);
+                if (member != null){
+                    circle.getMembers().add(member);
+                    if (member.getMarried() == circle.getResponsible() && member.getSex() == 'M') {
+                        circle.setResponsible(member.getId());
+                    }
+                }
             }
             if (circle.getResponsible() == 0 && circle.getMembers() != null) {
                 circle.setResponsible(circle.getMembers().get(0).getId()); /// here to be taken by checkbox - save circle and go to choose responsible, with checked (0)
