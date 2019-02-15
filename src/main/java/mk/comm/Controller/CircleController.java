@@ -1,6 +1,5 @@
 package mk.comm.Controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import mk.comm.Circle.Circle;
 import mk.comm.Community.Community;
 import mk.comm.Group.Group;
@@ -292,9 +291,7 @@ public class CircleController {
         List<Member> membersCircleBusy = new ArrayList<>();
 
         for (Circle circle : circlesExisting) {
-            for (Member member : circle.getMembers()) {
-                membersCircleBusy.add(member);
-            }
+                membersCircleBusy.addAll(circle.getMembers());
         }
         // take ony ones that do not belong to any circle of the group :
         List<Member> membersCircleFree = new ArrayList<>();

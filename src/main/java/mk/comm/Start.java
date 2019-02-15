@@ -30,26 +30,30 @@ public class Start {
     public String start(@AuthenticationPrincipal CurrentUser customUser, Model model) {
         // START of usual code
         if (customUser != null) {
-            User entityUser = customUser.getUser();
+            User user = customUser.getUser();
             boolean isAdmin = false;
             boolean isUser = false;
             boolean isOwner = false;
-            for (Role role : entityUser.getRoles()) {
-                if (role.getName().equals("ROLE_OWNER")) {
-                    isOwner = true;
+            if (user != null) {
+                if (user.getEnabled() > 0) {
+                    for (Role role : user.getRoles()) {
+                        if (role.getName().equals("ROLE_OWNER")) {
+                            isOwner = true;
+                        }
+                        if (role.getName().equals("ROLE_ADMIN")) {
+                            isAdmin = true;
+                        }
+                        if (role.getName().equals("ROLE_USER")) {
+                            isUser = true;
+                        }
+                    }
+                    if (isOwner) return "redirect:/owner/"; // owner can admin admins & all users
+                    if (isAdmin) return "redirect:/admin/"; // admin - admin own users in own community
+                    if (isUser) return "redirect:/user/";   //  user - belongs to community
+                } else {
+                    return "login/login";
                 }
-                if (role.getName().equals("ROLE_ADMIN")) {
-                    isAdmin = true;
-                }
-                if (role.getName().equals("ROLE_USER")) {
-                    isUser = true;
-                }
-
             }
-
-            if (isOwner) return "redirect:/owner/"; // owner can admin admins & all users
-            if (isAdmin) return "redirect:/admin/"; // admin - admin own users in own community
-            if (isUser) return "redirect:/user/";   //  user - belongs to community
         }
         // END of usual code
 

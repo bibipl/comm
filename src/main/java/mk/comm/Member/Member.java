@@ -18,7 +18,7 @@ public class Member {
 
     @Email
     @Size(max=245)
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     private String email;
 
     @NotBlank (message = "Imię nie może być puste")
