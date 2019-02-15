@@ -27,7 +27,7 @@ public class Circle {
 
     public static Circle SortByName (Circle circle) {
 
-        if (circle != null && circle.getMembers() != null) {
+        if (circle != null && circle.getMembers() != null && circle.getMembers().size() >1) {
             //get out all married women
             List<Member> marriedWomen = new ArrayList<>();
             List<Member> theRest = new ArrayList<>();
@@ -53,11 +53,14 @@ public class Circle {
                 for (int j = 1; j < size ; j++) {
                     Member member2 = theRest.get(j);
                     if ((member1.getSurname().compareTo(member2.getSurname()) < 0 && member2.getId() != circle.getResponsible())
-                            || member1.getId() == circle.getResponsible()) {
+                            || member1.getId() == circle.getResponsible())
+                    {
                         theRest.remove(member1);
                         theRest.add(j, member1);
+                        member1 = member2;
                     } else {
                         member1 = member2;
+
 
                     }
                 }

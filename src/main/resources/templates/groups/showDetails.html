@@ -32,7 +32,7 @@
             </td>
             <td class="usermenu20">
                         <span>
-                            <a class="btn btn-info usermenu"  th:href="@{'/admin/circles/add/' + ${group.id}}">
+                            <a class="btn btn-info usermenu"  th:href="@{'/admin/circles/addCircle/' + ${group.id}}">
                                (+) KRĄG (+)
                             </a>
                         </span>
@@ -156,7 +156,7 @@
             </tr>
             <tr>
                 <td>
-                    <a class="btn btn-secondary usermenu" style="text-align: center" th:text="'(+) DODAJ NOWEGO CZŁONKA DO KRĘGU (+)'" th:href="@{'/admin/circles/addOneMember/' + ${circle.id}} "></a>
+                    <a class="btn btn-secondary usermenu" style="text-align: center" th:text="'(+) DODAJ NOWEGO CZŁONKA DO KRĘGU (+)'" th:href="@{'/admin/circles/addMemb/' + ${circle.id}} "></a>
                 </td>
             </tr>
         </table>
