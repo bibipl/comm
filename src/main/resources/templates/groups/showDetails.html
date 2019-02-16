@@ -46,13 +46,28 @@
             </td>
         </tr>
     </table >
-    <table class="usermenutable"><tr><td><button type="button" class="btn btn-lg btn-warning usermenu" disabled th:text="'PODZIAŁ NA KRĘGI GRUPY: ' + ${group.name}"></button></td></tr></table>
+    <table class="usermenutable">
+        <tr>
+            <td class="usermenu30">
+                <a class="btn btn-lg btn-success usermenu" th:text="'Wyślij skład do wszystkich'" th:href="@{'/admin/email/group/' + ${group.id}} ">
+            </td>
+            <td class="usermenu70">
+                <button type="button" class="btn btn-lg btn-warning usermenu" disabled th:text="'PODZIAŁ NA KRĘGI : ' + ${group.name}"></button>
+            </td>
+        </tr>
+    </table>
     <th:block th:each="circle : ${circles}">
         <table class="usermenutable">
             <thead>
             <br>
             <tr>
-                <th class="usermenu80">
+                <th class="usermenu20">
+                    <a class="btn btn-lg btn-secondary usermenu" style="text-align: center" th:text="'(+)ZADANIE(+)'" th:href="@{'/admin/events/add/' + ${circle.id}} "></a>
+                </th >
+                <th class="usermenu20">
+                    <a class="btn btn-lg btn-secondary usermenu" style="text-align: center" th:text="'(+)DO KRĘGU(+)'" th:href="@{'/admin/circles/addMemb/' + ${circle.id}} "></a>
+                </th>
+                <th class="usermenu60">
                     <a class="btn btn-lg btn-success usermenu" th:text="'KRĄG NUMER:' + ${circle.number}" th:href="@{'/admin/circles/view/' + ${circle.id}} ">
                     </a>
                 </th>
@@ -115,10 +130,10 @@
 
                     </td>
                     <td class="usermenu10" >
-                        <span th:if="${member.id == circle.responsible}">
+                        <span th:if="${member.id == circle.responsible or member.married == circle.responsible}">
                             <a class="btn btn-primary usermenu" style="text-align: center" th:text="'-'" th:href="@{'/admin/circles/removeMemb/' + ${circle.id} + '/' + ${member.id}} "></a>
                         </span>
-                        <span th:unless="${member.id == circle.responsible}">
+                        <span th:if="${member.id != circle.responsible and member.married != circle.responsible}">
                             <a class="btn btn-outline-secondary usermenu" style="text-align: center" th:text="'-'" th:href="@{'/admin/circles/removeMemb/' + ${circle.id} + '/' + ${member.id}} "></a>
                         </span>
                     </td>
@@ -150,13 +165,19 @@
         </table>
         <table class="usermenutable">
             <tr>
-                <td>
-                    <a class="btn btn-secondary usermenu" style="text-align: center" th:text="'(+) DODAJ NOWE ZADANIE (+)'" th:href="@{'/admin/events/add/' + ${circle.id}} "></a>
+                <td class="usermenu50">
+                    <span>
+                        <a class="btn btn-success usermenu" th:href="@{'/admin/email/circleConsist/' + ${circle.id}} ">
+                            Wyślij skład do kręgu
+                        </a>
+                    </span>
                 </td>
-            </tr>
-            <tr>
-                <td>
-                    <a class="btn btn-secondary usermenu" style="text-align: center" th:text="'(+) DODAJ NOWEGO CZŁONKA DO KRĘGU (+)'" th:href="@{'/admin/circles/addMemb/' + ${circle.id}} "></a>
+                <td class="usermenu50">
+                    <span>
+                        <a class="btn btn-success usermenu" th:href="@{'/admin/email/circleNews/' + ${circle.id}} ">
+                            Wyślij wiadomość do kręgu
+                        </a>
+                    </span>
                 </td>
             </tr>
         </table>

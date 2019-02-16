@@ -66,16 +66,18 @@ public class GroupController {
     public  String showAllGroupsByCommunity (@AuthenticationPrincipal CurrentUser currentUser,
                                              @PathVariable Long idComm, Model model) {
         User user = currentUser.getUser();
-        if (user != null && user.getId() > 0 && idComm > 0) {
-            Community community = communityService.findById(idComm);
-            List<Group> groups = new ArrayList<>();
-            if (community != null) {
-                groups = groupService.findAllByIdCommunity(community.getId());
-                model.addAttribute("idComm", community.getId());
-                model.addAttribute("communities", community);
-                model.addAttribute("allGroups", groups);
-                model.addAttribute("iam", user);
-                return "/groups/showGroups";
+        if (user != null && user.getId() > 0) {
+            if (idComm != null) {
+                Community community = communityService.findById(idComm);
+                List<Group> groups = new ArrayList<>();
+                if (community != null) {
+                    groups = groupService.findAllByIdCommunity(community.getId());
+                    model.addAttribute("idComm", community.getId());
+                    model.addAttribute("communities", community);
+                    model.addAttribute("allGroups", groups);
+                    model.addAttribute("iam", user);
+                    return "/groups/showGroups";
+                }
             }
         }
         return "redirect:/admin/";
@@ -117,16 +119,21 @@ public class GroupController {
     public String groupAddForm (@AuthenticationPrincipal CurrentUser currentUser,
                                 @PathVariable Long idComm, Model model){
         User user = currentUser.getUser();
-        Community selCommunity = communityService.findById(idComm);
         Group group = new Group();
-        if (user != null && user.getId() > 0 && selCommunity != null) {
+        if (user != null && user.getId() > 0) {
             List<Community> communities = communityService.findAllByUserId(user.getId());
-            group.setIdCommunity(idComm);
-            model.addAttribute("communities", communities);
-            model.addAttribute("selCommunity", selCommunity);
-            model.addAttribute("group", group);
-            model.addAttribute("iam", user);
-            return "/groups/addGroup";
+            if (communities != null) {
+                if (idComm == 0) {
+                    idComm = communities.get(0).getId();
+                }
+                Community selCommunity = communityService.findById(idComm);
+                group.setIdCommunity(idComm);
+                model.addAttribute("communities", communities);
+                model.addAttribute("selCommunity", selCommunity);
+                model.addAttribute("group", group);
+                model.addAttribute("iam", user);
+                return "/groups/addGroup";
+            }
         }
         return "redirect:/admin/groups";
     }

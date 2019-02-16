@@ -106,8 +106,8 @@ public class EventController {
         if (idEvent > 0) {
             event = eventService.findById(idEvent);
             if (event != null && event.getCircleId() > 0 && checkCredentials(user, event.getCircleId())) {
-                model.addAttribute("event", event);
-                return "/event/deleteEvent";
+                        model.addAttribute("event", event);
+                        return "/event/deleteEvent";
             }
         }
         return "redirect:/admin/communities";

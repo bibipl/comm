@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang = "pl" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>ZADANIA</title>
+    <title>GRUPY</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
@@ -9,8 +9,8 @@
 </head>
 <body>
 <div class="container">
-    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'DODAJ NOWE ZADANIE DLA KRĘGU NR '
-    +${idCircle}+ ' | ADMINISTRATOR WSPÓLNOTY : ' + ${userName}"></button>
+    <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'NOWY PODZIAŁ NA KRĘGI'
+    + ' ADMINISTRATOR WSPÓLNOTY : ' + ${iam.name} + ' ' + ${iam.surname}"></button>
     <table class="usermenutable">
         <tr>
             <td class="usermenu20">
@@ -25,7 +25,7 @@
             </td>
             <td class="usermenu30">
                         <span>
-                            <a class="btn btn-success usermenu"  th:href="@{'/admin/events/' + ${idCircle}}" th:text="'KRĘGI'"></a>
+                            <a class="btn btn-success usermenu"  th:href="@{'/admin/groups'}" th:text="'GRUPY'"></a>
                         </span>
             </td>
             <td class="usermenu10">
@@ -37,46 +37,42 @@
             </td>
         </tr>
     </table>
-    <form th:action="@{'/admin/events/add'}" th:object="${event}" method="post">
+    <form th:action="@{/admin/groups/add}" th:object="${group}" method="post">
         <div class="container">
             <br><br>
             <div class="card">
                 <div class="card-body">
                     <input type="hidden" th:field="*{id}"/>
-                    <input type="hidden" th:field="*{circleId}"/>
                     <table class="usermenutable">
                         <tr>
-                            <td class="usermenu20">
-                                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>NAZWA ZADANIA</button>
+                            <td class="usermenu10"></td>
+                            <td>
+                                <p>PODZIAŁ NA KRĘGI</p>
                             </td>
-                            <td class="usermenu30">
-                                <select th:field="*{name}" class="form-control">
-                                    <option th:each="i : ${eventNames}" th:value="${i}" th:text="${i}"></option>
+                        </tr>
+                        <tr>
+                            <td class="usermenu10">
+                                <div style="text-align: center">NAZWA</div>
+                            </td>
+                            <td class="usermenu80">
+                                <input class ="full" th:field="*{name}" type="text"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="usermenu10">
+                                <div style="text-align: center">WSPÓLNOTA</div>
+                            </td>
+                            <td>
+                                <select th:field="*{idCommunity}" class="form-control btn btn-secondary">
+                                    <option th:each="i : ${communities}" th:value="${i.id}" th:text="${i.name}" th:selected="${i.id == selCommunity.id}"></option>
                                 </select>
                             </td>
-                            <td class="usermenu10">
-                                <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>DATA</button>
-                            </td>
-                            <td class="usermenu30">
-                                <input type="date" th:value="*{date}" th:field="*{date}"/></br>
-                            </td>
                         </tr>
                     </table>
                     <table class="usermenutable">
                         <tr>
-                            <td class="usermenu20">
-                                <div style="text-align: center">OPIS ZADANIA</div>
-                            </td>
-                            <td class="usermenu90">
-                                <input class ="full" th:field="*{description}" type="text"/>
-                            </td>
-                        </tr>
-                    </table>
-
-                    <table class="usermenutable">
-                        <tr>
-                            <td class="usermenu100"><span><input type="submit" class="btn btn-success full" value="ZAPISZ"/></span></td>
-                            <td><a class="btn btn-secondary btn-block"  th:href="@{'/admin/events/' + ${event.circleId}}" th:text="'POWRÓT DO GRUPY'"></a></td>
+                            <td class="usermenu50"><span><input type="submit" class="btn btn-success full" value="ZAPISZ"/></span></td>
+                            <td class="usermenu50"><span><a th:href="@{/admin/groups}" class="btn btn-info full">POWRÓT GRUPY</a></span></td>
                         </tr>
                     </table>
                 </div>

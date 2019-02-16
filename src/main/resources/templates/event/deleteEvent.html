@@ -59,7 +59,8 @@
             </div>
         </div>
     </form>
-    <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/communities'}" th:text="'Powrót do listy wspólnot'"></a>
+    <br>
+    <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/events/' + ${event.circleId}}" th:text="'Powrót do listy grup'"></a>
 </div>
 </body>
 </html>
