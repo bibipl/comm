@@ -1,19 +1,22 @@
 package mk.comm.Controller;
 
 import mk.comm.Circle.Circle;
+import mk.comm.Community.Community;
 import mk.comm.Event.Event;
+import mk.comm.Group.Group;
 import mk.comm.Member.Member;
-import mk.comm.Service.CircleService;
-import mk.comm.Service.EventService;
+import mk.comm.Service.*;
 import mk.comm.User.CurrentUser;
 import mk.comm.User.User;
+import mk.comm.Email.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
-import javax.validation.constraints.Email;
 import java.util.List;
 
 @Controller
@@ -21,9 +24,19 @@ import java.util.List;
 public class EmailController {
 
     @Autowired
+    CommunityService communityService;
+    @Autowired
+    GroupService groupService;
+    @Autowired
     CircleService circleService;
     @Autowired
     EventService eventService;
+    @Autowired
+    MemberService memberService;
+    @Autowired
+    EmailSender emailSender;
+    @Autowired
+    TemplateEngine templateEngine;
 
     @GetMapping ("/circleConsist/{idCircle}")
     public String emailToCirclewithMembers (@AuthenticationPrincipal CurrentUser currentUser,
@@ -49,15 +62,55 @@ public class EmailController {
     public  String emailToCirclewithMembersAction ( @AuthenticationPrincipal CurrentUser currentUser,
                                                     @ModelAttribute Email email,
                                                     @PathVariable Long idCircle,
-                                                    @RequestParam(value = "mailIds", required = false) long[] mailIds
+                                                    @RequestParam(value = "mailIds", required = false) long[] mailIds,
+                                                    @RequestParam(value="selfSend", required = false) boolean selfSend
                                                     ) {
-        // TODO check credentials !!!!
-        // TODO format text to html
-        // TODO prepare table of members in html and add to text;
-        // TODO prepare list of evens in html and add to text
-        // TODO send
+        User user = currentUser.getUser();
+        if (user != null && idCircle >0) {
+            Circle circle = circleService.findById(idCircle);
+            if (circle != null && circle.getGroupId() > 0) {
+                Group group = groupService.findById(circle.getGroupId());
+                if (group != null && group.getIdCommunity() > 0) {
+                    Community community = communityService.findById(group.getIdCommunity());
+                    if (community.getUserId() == user.getId()) {
+                        List<Event> events = eventService.findAllByCircleIdOrderByDate(idCircle);
+                        String sentBy = "Email wysłany przez : " + currentUser.getUsername();
+                        Context context = new Context();
+                        context.setVariable("circleNumber", circle.getNumber());
+                        context.setVariable("description", email.getEmailText());
+                        context.setVariable("sentBy", sentBy);
+                        context.setVariable("members", circle.getMembers());
+                        context.setVariable("events", events);
+                        String body = templateEngine.process("/email/templateMailToCircle", context);
+                        String subject;
+                        if (community.getName() != null) {
+                            subject = community.getName();
+                        } else {
+                            subject = "Email wspólnotowy";
+                        }
+                        if (mailIds != null && mailIds.length > 0) {
+                            for (Long i : mailIds) {
+                                if (i > 0) {
+                                    Member member = memberService.findById(i);
+                                    if (member.getEmail() != null) {
+                                        emailSender.sendEmail(member.getEmail(), subject, body);
+                                    }
+                                }
+                            }
+                        }
+                        if (selfSend && user.getUsername() != null)  {
+                            emailSender.sendEmail(user.getUsername(), subject, body);
 
-        return "/";
+                        }
+
+                    }
+                    if (group.getId() > 0)
+                        return "redirect:/admin/groups/view/" + group.getId();
+                }
+
+            }
+        }
+        return "redirect:/";
     }
 
 }
