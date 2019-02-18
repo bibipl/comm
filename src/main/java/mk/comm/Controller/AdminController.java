@@ -365,7 +365,7 @@ public class AdminController {
                 if (emailMemb != null && emailMemb != "" && emailMemb.equals(email.getEmailTo())) {
                     sentBy = sentBy + " (" + user.getUsername() + ")";
                     Context context = new Context();
-                    context.setVariable("header", "Email wspólnotowy");
+                    context.setVariable("header", email.getEmailHead());
                     context.setVariable("title", "Witaj " + member.getName() + ' ' + member.getSurname() + "!");
                     context.setVariable("description", email.getEmailText());
                     context.setVariable("sentBy", sentBy);
@@ -383,6 +383,7 @@ public class AdminController {
         }
         return "redirect:/admin/communities";
     }
+
     @GetMapping("/communities/member/emailToAll/{idComm}")
     public String emailAll (@AuthenticationPrincipal CurrentUser currentUser,
                             @PathVariable Long idComm, Model model) {
