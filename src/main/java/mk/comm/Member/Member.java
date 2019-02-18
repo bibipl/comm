@@ -10,7 +10,8 @@ import javax.validation.constraints.Size;
 @Data
 @Entity
 @Table (name = "MEMBER")
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
