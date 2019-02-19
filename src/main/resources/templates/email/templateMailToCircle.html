@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title th:remove="all">Informacja</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style type="text/css">
         h1 {font-size: 18px; color: #444444 !important; font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Unicode", sans-serif; line-height: 1.5;}
         h3 {font-size: 16px; color: #444444 !important; font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Unicode", sans-serif;}
+        h2 {font-size: 16px; color: #ffffff; font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Unicode", sans-serif;}
         p {font-size: 12px; color: #ffffff; font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Unicode", sans-serif; line-height: 1.5;}
         table { border: 1px solid #e4e4e4;}
         a {color: #062b67; text-decoration: none; font-weight: bold;}
@@ -19,29 +20,36 @@
     </table>
     <table width="100%" cellpadding="0" cellspacing="0" bgcolor="0095cc">
         <tr bgcolor="ffffff">
-            <td><h1 th:text="'Krąg numer ' + ${circleNumber}"></h1></td>
+            <td><h1 th:text="'Krąg numer ' + ${circle.number}"></h1></td>
         </tr>
+    </table>
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="0095cc" border="1px solid grey">
+        <th:block th:each="event : ${events}">
+            <tr bgcolor="ffffff">
+                <td height="30" align="center" style="width: 40%" th:text="${event.date}"></td>
+                <td height="30" align="center" style="width: 40%" th:text="${event.name}"></td>
+                <td height="30" align="center" style="width: 20%" th:text="${event.description}"></td>
+            </tr>
+        </th:block>
     </table>
     <table width="100%" cellpadding="0" cellspacing="0" bgcolor="0095cc">
         <thead>
         <tr bgcolor="0095cc">
-            <th height="30" align="center" style="width: 40%"><p th:text="'Imię i Nazwisko'"></p></th>
-            <th height="30" align="center" style="width: 40%"><p th:text="'email'"></p></th>
-            <th height="30" align="center" style="width: 40%"><p th:text="'telefon'"></p></th>
+            <th height="30" align="center" style="width: 40%"><h2 th:text="'Imię i Nazwisko'"></h2></th>
+            <th height="30" align="center" style="width: 40%"><h2 th:text="'email'"></h2></th>
+            <th height="30" align="center" style="width: 40%"><h2 th:text="'telefon'"></h2></th>
         </tr>
         </thead>
-        <th:block th:each="member : ${members}">
-            <tr bgcolor="#d3d3d3">
+        <th:block th:each="member : ${circle.members}">
+            <tr th:if="${member.id == circle.responsible or member.married == circle.responsible }" bgcolor="orange">
                 <td height="30" align="center" style="width: 40%" th:text="${member.name} + ' ' + ${member.surname}"></td>
                 <td height="30" align="center" style="width: 40%" th:text="${member.email}"></td>
                 <td height="30" align="center" style="width: 20%" th:text="${member.phone}"></td>
             </tr>
-        </th:block>
-        <th:block th:each="event : ${events}">
-            <tr bgcolor="ffffff">
-                <td height="30" align="center" style="width: 40%" th:text="${event.name}"></td>
-                <td height="30" align="center" style="width: 40%" th:text="${event.date}"></td>
-                <td height="30" align="center" style="width: 20%" th:text="${event.description}"></td>
+            <tr th:if="${member.id != circle.responsible and member.married != circle.responsible }" bgcolor="#d3d3d3">
+                <td height="30" align="center" style="width: 40%" th:text="${member.name} + ' ' + ${member.surname}"></td>
+                <td height="30" align="center" style="width: 40%" th:text="${member.email}"></td>
+                <td height="30" align="center" style="width: 20%" th:text="${member.phone}"></td>
             </tr>
         </th:block>
     </table>

@@ -1,6 +1,7 @@
 package mk.comm.Circle;
 
 import lombok.Data;
+import mk.comm.Event.Event;
 import mk.comm.Member.Member;
 
 import javax.persistence.*;
@@ -19,6 +20,8 @@ public class Circle {
     private Long groupId;
     private int number;
     private Long responsible;
+    @Transient
+    private List<Event> events;
 
     @ManyToMany (cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "circle_member", joinColumns = @JoinColumn(name = "circle_id"),

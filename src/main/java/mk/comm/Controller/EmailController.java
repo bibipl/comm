@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -76,10 +77,9 @@ public class EmailController {
                         List<Event> events = eventService.findAllByCircleIdOrderByDate(idCircle);
                         String sentBy = "Email wysłany przez : " + currentUser.getUsername();
                         Context context = new Context();
-                        context.setVariable("circleNumber", circle.getNumber());
+                        context.setVariable("circle", circle);
                         context.setVariable("description", email.getEmailText());
                         context.setVariable("sentBy", sentBy);
-                        context.setVariable("members", circle.getMembers());
                         context.setVariable("events", events);
                         String body = templateEngine.process("/email/templateMailToCircle", context);
                         String subject;
@@ -108,6 +108,89 @@ public class EmailController {
                         return "redirect:/admin/groups/view/" + group.getId();
                 }
 
+            }
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping ("/group/{idGroup}")
+    public String emailToGroupwithCircleMembers (@AuthenticationPrincipal CurrentUser currentUser,
+                                            @PathVariable Long idGroup, Model model) {
+        User user = currentUser.getUser();
+        if ( user != null && user.getId() >0 && idGroup >0) { // check credentials !!!
+            Group group = groupService.findById(idGroup);
+            if (group != null && group.getIdCommunity() >0) {
+                Community community = communityService.findById(group.getIdCommunity());
+                if (community != null && community.getUserId() == user.getId()) {
+                    List<Circle> circles = circleService.findAllByGroupIdOrderByNumberAsc(idGroup);
+                    if (circles != null) {
+                        List<Member> members = new ArrayList<>();
+                        for (Circle circle : circles) {
+                            if (circle.getMembers() != null) {
+                                members.addAll(circle.getMembers());
+                            }
+                        }
+                        if (members != null) {
+                            for (Member member : members) {
+                                member.setDoSomeAction(true);
+                            }
+                            model.addAttribute("group", group);
+                            model.addAttribute("members", members);
+                            return "/email/toMembersForm";
+                        }
+                    }
+
+                }
+            }
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping ("/group/{idGroup}")
+    public String emailToGroupwithCircleMembersAction (@AuthenticationPrincipal CurrentUser currentUser,
+                                                       @RequestParam(value = "mailIds", required = false) long[] mailIds,
+                                                       @RequestParam(value = "emailText", required = false) String emailText,
+                                                       @PathVariable Long idGroup, Model model) {
+        User user = currentUser.getUser();
+        if ( user != null && user.getId() >0 && idGroup >0) { // check credentials !!!
+            Group group = groupService.findById(idGroup);
+            if (group != null && group.getIdCommunity() >0) {
+                Community community = communityService.findById(group.getIdCommunity());
+                if (community != null && community.getUserId() == user.getId()) {
+                    List<Circle> circles = circleService.findAllByGroupIdOrderByNumberAsc(idGroup);
+                    if (circles != null) {
+                        String sentBy = "Email wysłany przez : " + currentUser.getUsername();
+                        for (Circle circle : circles) {
+                            if (circle.getId() >0) {
+                                circle.setEvents(eventService.findAllByCircleIdOrderByDate(circle.getId()));
+                            }
+                        }
+                        String subject = "";
+                        if (community.getName() != null) {
+                            subject = community.getName();
+                        } else {
+                            subject = "Email wspólnotowy";
+                        }
+                        Context context = new Context();
+                        context.setVariable("circles", circles);
+                        context.setVariable("subject", subject);
+                        context.setVariable("description", emailText);
+                        context.setVariable("sentBy", sentBy);
+                        String body = templateEngine.process("/email/templateMailToGroup", context);
+
+                        if (mailIds != null && mailIds.length > 0) {
+                            for (Long i : mailIds) {
+                                if (i > 0) {
+                                    Member member = memberService.findById(i);
+                                    if (member.getEmail() != null) {
+                                        emailSender.sendEmail(member.getEmail(), subject, body);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (group.getId() > 0) return "redirect:/admin/groups/view/" + group.getId();
             }
         }
         return "redirect:/";
