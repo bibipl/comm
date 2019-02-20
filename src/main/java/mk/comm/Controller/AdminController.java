@@ -279,7 +279,7 @@ public class AdminController {
         }
         return"redirect:/admin/communities";
     }
-    @PostMapping("community/member/delete")
+    @PostMapping("communities/member/delete")
     public String memberDeleteAction(@AuthenticationPrincipal CurrentUser currentUser,
                                      @ModelAttribute Member member1) {
         User user = currentUser.getUser();
