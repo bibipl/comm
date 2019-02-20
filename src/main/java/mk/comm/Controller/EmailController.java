@@ -23,7 +23,6 @@ import java.util.List;
 @Controller
 @RequestMapping ("/admin/email")
 public class EmailController {
-
     @Autowired
     CommunityService communityService;
     @Autowired

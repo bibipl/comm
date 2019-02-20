@@ -49,6 +49,15 @@
             </td>
         </tr>
     </table>
+    <table th:if="${idComm}" class="usermenutable">
+        <tr>
+            <td class="usermenu100">
+                <a  class="btn btn-info usermenu"  th:href="@{'/admin/groups/random/' + ${idComm}}">
+                   Losowanie kręgów
+                </a>
+            </td>
+        </tr>
+    </table>
     <table class="usermenutable">
         <thead>
         <tr>

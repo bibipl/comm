@@ -24,8 +24,7 @@ public class MemberAttr {
         List<String> attends = Arrays.asList(
                 "często",
                 "czasem",
-                "rzadko",
-                "nie przychodzi");
+                "nigdy");
         return attends;
     }
 }

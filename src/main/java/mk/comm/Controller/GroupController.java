@@ -4,6 +4,8 @@ import mk.comm.Circle.Circle;
 import mk.comm.Community.Community;
 import mk.comm.Event.Event;
 import mk.comm.Group.Group;
+import mk.comm.Member.Member;
+import mk.comm.Member.MemberAttr;
 import mk.comm.Service.*;
 import mk.comm.User.CurrentUser;
 import mk.comm.User.User;
@@ -15,8 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin/groups")
@@ -224,6 +225,140 @@ public class GroupController {
         }
         return "redirect:/admin/groups";
     }
+
+    @GetMapping("/random/{idComm}")
+    public String randomCircleDivisionForm (@AuthenticationPrincipal CurrentUser currentUser,
+                                            @PathVariable Long idComm, Model model) {
+        User user = currentUser.getUser();
+        if (user != null && idComm > 0) {
+            Community community = communityService.findById(idComm);
+            if (community != null && community.getUserId() == user.getId()) {
+                Long numberMemb = memberService.countAllByCommunityId(idComm);
+                model.addAttribute("idComm", idComm);
+                model.addAttribute("numberMemb", numberMemb);
+                return "/groups//randomGroupConfirm";
+            }
+        }
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/random/{idComm}")
+    public String randomCircleDivision (@AuthenticationPrincipal CurrentUser currentUser,
+                                        @RequestParam(value="name", required = false) String name,
+                                        @RequestParam(value="number", required = false) int number,
+                                        @PathVariable Long idComm,Model model){
+        User user = currentUser.getUser();
+        if (user != null && idComm > 0 && number > 0) {
+            Community community = communityService.findById(idComm);
+            if (community.getUserId() == user.getId()) {
+                List<String> attendance = MemberAttr.attendance();
+                List<Member> allMembers = memberService.findAllByCommunityId(idComm);
+                int numberOfMembers = allMembers.size();
+                List<Member> singleMembers = new ArrayList<>();
+                List<Member> wifeMembers = new ArrayList<>();
+                Group group = new Group();
+                group.setIdCommunity(idComm);
+                group.setName(name);
+                int numberOfCircles = number;
+                if (numberOfCircles < numberOfMembers) {
+                    groupService.save(group);
+                    if (allMembers != null) {
+                        for (Member member : allMembers) {
+                            boolean hasHusband = false;
+                            if (member.getSex() == 'K' && member.getMarried() > 0) {
+                                for (Member member1 : allMembers) {
+                                    if (member1.getMarried() == member.getId()) {
+                                        hasHusband = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (hasHusband) {
+                                wifeMembers.add(member);
+                            } else {
+                                singleMembers.add(member);
+                            }
+                        }
+
+                    }
+
+
+                    // we have two lists - single and wifes.
+
+                    if (singleMembers != null && singleMembers.size() > 0) {
+                        List<Member> oftenMember = new ArrayList<>();
+                        List<Member> rareMember = new ArrayList<>();
+                        List<Member> neverMember = new ArrayList<>();
+                        for (Member member : singleMembers) {
+                            if (member.getAttendance().equals(attendance.get(0))) {
+                                oftenMember.add(member);
+                            } else if (member.getAttendance().equals(attendance.get(1))) {
+                                rareMember.add(member);
+                            } else {
+                                neverMember.add(member);
+                            }
+                        }
+                        // We have 3 groups of single members. Now algorythm
+                        // 1. we shuffle it.
+                        Collections.shuffle(oftenMember);
+                        Collections.shuffle(rareMember);
+                        Collections.shuffle(neverMember);
+                        allMembers.clear();
+                        allMembers.addAll(oftenMember);
+                        allMembers.addAll(rareMember);
+                        allMembers.addAll(neverMember);
+                        Circle[] circles = new Circle[numberOfCircles];
+                        boolean[] miss = new boolean[numberOfCircles];
+                        int i = 0;
+                        Iterator memb = allMembers.iterator();
+                        while (memb.hasNext()) {
+                            Member member = (Member) memb.next();
+                            if (miss[i]) {
+                                i++;
+                                i = i % numberOfCircles;
+                                miss[i] = false;
+                            }
+                            if (circles[i] == null) {
+                                circles[i] = new Circle();
+                            }
+                            circles[i].getMembers().add(member);
+                            if (member.getMarried() > 0 && wifeMembers.size() > 0) {
+                                Member wife = new Member();
+                                for (Member member1 : wifeMembers) {
+                                    if (member.getMarried() == member1.getId()) {
+                                        wife = member1;
+                                        break;
+                                    }
+                                }
+                                circles[i].getMembers().add(wife);
+                                miss[i] = true;
+                            }
+                            i++;
+                            i = i % numberOfCircles;
+                        }
+
+                        for (int j = 0; j < circles.length; j++) {
+                            if (circles[j] != null) {
+                                circles[j].setGroupId(group.getId());
+                                circles[j].setNumber(j + 1);
+                                if (circles[j].getMembers().get(0).getId() > 0) {
+                                    circles[j].setResponsible(circles[j].getMembers().get(0).getId());
+                                }
+                                circleService.save(circles[j]);
+                            }
+                        }
+                        return "redirect:/admin/groups/" + idComm;
+                    }
+                }
+            }
+        }
+        return "redirect:/";
+    }
+
+
+
+
     // *** checks if user has right to change anything in the "circle".
     // *** additionally confirms that community, group and circle are not empty and have not empty id to parent.
     private boolean checkAminCredential (User user, Long idGroup) {
@@ -236,7 +371,6 @@ public class GroupController {
                     credential = true;
                 }
             }
-
         }
         return credential;
     }
