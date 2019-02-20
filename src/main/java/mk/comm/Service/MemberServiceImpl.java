@@ -18,7 +18,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public void save(Member member) {
-        if (member != null && member.getEmail().equals("")) {
+        if (member != null && member.getEmail() != null && member.getEmail().equals("")) {
             member.setEmail(null);
         }
         memberRepository.save(member);

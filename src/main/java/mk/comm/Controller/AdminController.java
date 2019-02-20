@@ -180,29 +180,15 @@ public class AdminController {
                     member1.setMarried(member.getId());
                     memberService.save(member);
                     memberService.save(member1);
-                    if (member.getCommunityId() > 0) {
-                        return "redirect:/admin/communities/view/" + member.getCommunityId();
-                    } else {
-                        return "redirect:/admin/communities";
-                    }
+                }
+                if (member.getCommunityId() > 0) {
+                    return "redirect:/admin/communities/view/" + member.getCommunityId();
+                } else {
+                    return "redirect:/admin/communities";
                 }
             }
         }
-        // ** here - no success - we go back to previous free starte *****//
-        if (member1 != null) {
-            member1.setMarried((long)0);
-            memberService.save(member1);
-        }
-        if (member != null && member.getId() >0) {
-            member = memberService.findById(member.getId());
-            member.setMarried((long)0);
-            memberService.save(member);
-        }
-        if (member.getCommunityId() > 0) {
-            return "redirect:/admin/communities/view/" + member.getCommunityId();
-        } else {
             return "redirect:/admin/communities";
-        }
     }
 
     @PostMapping("/communities/member/tearMarriage")

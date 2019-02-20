@@ -45,7 +45,7 @@
     </table>
     <table class="usermenutable">
         <tr>
-            <td class="btn btn-primary disabled usermenu100" th:text="'Wybierasz małżonka dla' + ${member.name} + ' ' + ${member.surname}"></td>
+            <td class="btn btn-primary disabled usermenu100" th:text="'Wybierasz małżonka dla: ' + ${member.name} + ' ' + ${member.surname}"></td>
         </tr>
     </table>
     <form th:action="@{/admin/communities/member/addMarriage}" th:object="${member}" method="post">
