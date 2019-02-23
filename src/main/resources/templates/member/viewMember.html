@@ -94,6 +94,15 @@
                         </tr>
                         <tr>
                             <td class="usermenu30">
+                                <span class="btn btn-secondary usermenu">PŁEĆ</span>
+                            </td>
+                            <td class="usermenu70">
+                                <span th:if="*{sex == 'M'}" class="btn btn-primary usermenu" style="text-align: left" th:text="' Mężczyzna '"></span>
+                                <span th:unless="*{sex == 'K'}" class="btn btn-primary usermenu" style="text-align: left" th:text="'Kobieta'"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="usermenu30">
                                 <span class="btn btn-secondary usermenu">STAN</span>
                             </td>
                             <td class="usermenu70">
@@ -120,6 +129,7 @@
                     </table>
                     <table class="usermenutable">
                         <tr>
+                            <td class="usermenu30"><span><a th:href="@{'/admin/communities/member/edit/' + ${member.id}}" class="btn btn-warning full">EDYTUJ</a></span></td>
                             <td class="usermenu90"><span><a th:href="@{'/admin/communities/view/' + ${community.id}}" class="btn btn-info full">POWRÓT</a></span></td>
                             <td class="usermenu10"><span><a th:href="@{'/admin/communities/member/delete/' + ${member.id}}" class="btn btn-danger full">USUŃ</a></span></td>
                         </tr>

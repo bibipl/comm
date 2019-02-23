@@ -54,9 +54,11 @@ public class CommunityController {
         if (user != null && user.getId() > 0 && id > 0) {
             community = communityService.findById(id);
             if (community != null && community.getId() != 0 && community.getUserId().equals(user.getId())) {
-                members = memberService.findAllByCommunityIdOrderBySurname(community.getId());
+                members = memberService.findAllByCommunityIdOrderBySurnameAscNameAsc(community.getId());
                 if (members != null) {
+                    int numberMemb = members.size();
                     members = CommDo.getMarriageOrder(members);
+                    model.addAttribute("numberMemb", numberMemb);
                     model.addAttribute("community", community);
                     model.addAttribute("members", members);
                     model.addAttribute("iam", user);

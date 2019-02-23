@@ -18,7 +18,6 @@ public class CircleServiceImpl implements CircleService {
 
     @Override
     public void save(Circle circle) {
-        circle = Circle.SortByName(circle);
         circleRepository.save(circle);
     }
 
@@ -34,7 +33,11 @@ public class CircleServiceImpl implements CircleService {
 
     @Override
     public List<Circle> findAllByGroupIdOrderByNumberAsc(Long idGroup) {
-        return circleRepository.findAllByGroupIdOrderByNumberAsc(idGroup);
+        List<Circle> circles = circleRepository.findAllByGroupIdOrderByNumberAsc(idGroup);
+        for (Circle circle : circles) {
+            circle = Circle.SortByName(circle);
+        }
+        return circles;
     }
 
     @Override

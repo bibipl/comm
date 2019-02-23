@@ -38,6 +38,7 @@ public class EmailController {
     @Autowired
     TemplateEngine templateEngine;
 
+    // Send email with inhalt of the circle (circle members) to the
     @GetMapping ("/circleConsist/{idCircle}")
     public String emailToCirclewithMembers (@AuthenticationPrincipal CurrentUser currentUser,
                                            @PathVariable Long idCircle, Model model) {
@@ -46,6 +47,7 @@ public class EmailController {
             if ( user != null && user.getId() >0 && idCircle >0) { // check credentials !!!
                 Circle circle = circleService.findById(idCircle);
                 if (circle != null && circle.getMembers() != null) {
+                    circle = Circle.SortByName(circle);
                     for (Member member : circle.getMembers()) {
                             member.setDoSomeAction(true);
                     }
@@ -68,6 +70,7 @@ public class EmailController {
         User user = currentUser.getUser();
         if (user != null && idCircle >0) {
             Circle circle = circleService.findById(idCircle);
+            circle = Circle.SortByName(circle);
             if (circle != null && circle.getGroupId() > 0) {
                 Group group = groupService.findById(circle.getGroupId());
                 if (group != null && group.getIdCommunity() > 0) {
@@ -87,16 +90,7 @@ public class EmailController {
                         } else {
                             subject = "Email wspólnotowy";
                         }
-                        if (mailIds != null && mailIds.length > 0) {
-                            for (Long i : mailIds) {
-                                if (i > 0) {
-                                    Member member = memberService.findById(i);
-                                    if (member.getEmail() != null) {
-                                        emailSender.sendEmail(member.getEmail(), subject, body);
-                                    }
-                                }
-                            }
-                        }
+                        mailToThem(mailIds, subject, body);
                         if (selfSend && user.getUsername() != null)  {
                             emailSender.sendEmail(user.getUsername(), subject, body);
 
@@ -177,22 +171,28 @@ public class EmailController {
                         context.setVariable("sentBy", sentBy);
                         String body = templateEngine.process("/email/templateMailToGroup", context);
 
-                        if (mailIds != null && mailIds.length > 0) {
-                            for (Long i : mailIds) {
-                                if (i > 0) {
-                                    Member member = memberService.findById(i);
-                                    if (member.getEmail() != null) {
-                                        emailSender.sendEmail(member.getEmail(), subject, body);
-                                    }
-                                }
-                            }
-                        }
+                        mailToThem(mailIds, subject, body);
                     }
                 }
                 if (group.getId() > 0) return "redirect:/admin/groups/view/" + group.getId();
             }
         }
         return "redirect:/";
+    }
+
+    //***********************************************************************************************************
+    // send mails to the members of id's in the table mailIds
+    private void mailToThem(@RequestParam(value = "mailIds", required = false) long[] mailIds, String subject, String body) {
+        if (mailIds != null && mailIds.length > 0) {
+            for (Long i : mailIds) {
+                if (i > 0) {
+                    Member member = memberService.findById(i);
+                    if (member.getEmail() != null) {
+                        emailSender.sendEmail(member.getEmail(), subject, body);
+                    }
+                }
+            }
+        }
     }
 
 }

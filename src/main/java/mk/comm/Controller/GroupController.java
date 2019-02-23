@@ -309,18 +309,18 @@ public class GroupController {
                         allMembers.addAll(rareMember);
                         allMembers.addAll(neverMember);
                         Circle[] circles = new Circle[numberOfCircles];
+                        for (int crcNo = 0; crcNo < circles.length; crcNo++) {
+                            circles[crcNo] = new Circle();
+                        }
                         boolean[] miss = new boolean[numberOfCircles];
                         int i = 0;
                         Iterator memb = allMembers.iterator();
                         while (memb.hasNext()) {
                             Member member = (Member) memb.next();
                             if (miss[i]) {
+                                miss[i] = false;
                                 i++;
                                 i = i % numberOfCircles;
-                                miss[i] = false;
-                            }
-                            if (circles[i] == null) {
-                                circles[i] = new Circle();
                             }
                             circles[i].getMembers().add(member);
                             if (member.getMarried() > 0 && wifeMembers.size() > 0) {

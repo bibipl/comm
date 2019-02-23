@@ -29,9 +29,8 @@ public class Circle {
     List<Member> members = new ArrayList<>();
 
     public static Circle SortByName (Circle circle) {
-
         if (circle != null && circle.getMembers() != null && circle.getMembers().size() >1) {
-            //get out all married women
+            //****************** get out all married women
             List<Member> marriedWomen = new ArrayList<>();
             List<Member> theRest = new ArrayList<>();
             for (Member member : circle.getMembers()) {
@@ -49,13 +48,20 @@ public class Circle {
                     theRest.add(member);
                 }
             }
-            // *** only men and women without husband in the circle. lest sort (reversal so in db will be order ok)
+            // *** only men and women without husband in the circle. lets sort
             int size = theRest.size();
             while (size > 1) {
                 Member member1 = theRest.get(0);
                 for (int j = 1; j < size ; j++) {
                     Member member2 = theRest.get(j);
-                    if ((member1.getId().equals(circle.getResponsible())) || (!member2.getId().equals(circle.getResponsible()) && member1.getSurname().compareTo(member2.getSurname()) < 0))
+
+                    ///  condition :    1. if memb 2 is resp,move.
+                    ///                 2. if memb1 is not resp && memb2 < memb1 move (here surname, then if equal - names are compared)
+                    if ((       member2.getId().equals(circle.getResponsible()))
+                            || (!member1.getId().equals(circle.getResponsible())
+                                && (member1.getSurname().compareTo(member2.getSurname()) > 0)
+                                    || (member1.getSurname().compareTo(member2.getSurname()) == 0)
+                                        && (member1.getName().compareTo(member2.getName()) > 0)))
                     {
                         theRest.remove(member1);
                         theRest.add(j, member1);
@@ -69,13 +75,13 @@ public class Circle {
             List <Member> all = new ArrayList<>();
             for (Member member : theRest) {
                 if (member.getMarried() > 0) {
+                    all.add(member);
                     for (Member wife : marriedWomen) {
                         if (wife.getMarried() == member.getId()) {
                             all.add(wife);
                             break;
                         }
                     }
-                    all.add(member);
                 } else {
                     all.add(member);
                 }

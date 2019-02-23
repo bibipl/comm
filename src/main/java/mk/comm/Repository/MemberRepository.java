@@ -14,5 +14,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     @Query ("select m from Member m where m.sex=?1 and m.married=0")
     List<Member> findAllMarriedBySex (char sex);
     List<Member> findAllByCommunityIdOrderBySurname (Long id);
+    List<Member> findAllByCommunityIdOrderBySurnameAscNameAsc (Long id);
     long countAllByCommunityId (Long idComm);
 }
