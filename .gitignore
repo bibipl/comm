@@ -23,3 +23,5 @@
 /nbdist/
 /.nb-gradle/
 /build/
+/home/bibipl/myApps/comm/src/main/resources/.application.properties
+.application.properties
