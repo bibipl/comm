@@ -70,10 +70,10 @@
                 </td>
                 <td class="usermenu30">
                     <span>
-                        <a th:if="${member.married == 0} and ${member.email != null} and ${member.email != ''}" th:href="@{'/admin/communities/member/email/' + ${member.id}}" class="btn btn-secondary usermenu" style="text-align: left" th:text="${member.email}"></a>
-                        <a th:if="${member.married == 0} and (${member.email == null} or ${member.email == ''})" th:href="@{'/admin/communities/member/email/' + ${member.id}}" class="btn btn-secondary usermenu" style="text-align: left" th:text="'-'"></a>
-                        <a th:if="${member.married != 0} and ${member.email != null} and ${member.email != ''}" th:href="@{'/admin/communities/member/email/' + ${member.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${member.email}"></a>
-                        <a th:if="${member.married != 0} and (${member.email == null} or ${member.email == ''})" th:href="@{'/admin/communities/member/email/' + ${member.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="'-'"></a>
+                        <a th:if="${member.married == 0} and ${member.email != null} and ${member.email != ''}" th:href="@{'/admin/email/email/' + ${member.id}}" class="btn btn-secondary usermenu" style="text-align: left" th:text="${member.email}"></a>
+                        <a th:if="${member.married == 0} and (${member.email == null} or ${member.email == ''})" th:href="@{'/admin/email/email/' + ${member.id}}" class="btn btn-secondary usermenu" style="text-align: left" th:text="'-'"></a>
+                        <a th:if="${member.married != 0} and ${member.email != null} and ${member.email != ''}" th:href="@{'/admin/email/email/' + ${member.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${member.email}"></a>
+                        <a th:if="${member.married != 0} and (${member.email == null} or ${member.email == ''})" th:href="@{'/admin/email/email/' + ${member.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="'-'"></a>
                     </span>
                 </td>
                 <td class="usermenu10">
@@ -103,12 +103,12 @@
         <tr>
             <td class="usermenu50">
                 <span>
-                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/communities/member/emailToAll/' + ${community.id}}" th:text="'NAPISZ DO WSZYSTKICH'"></a>
+                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/email/emailToAll/' + ${community.id}}" th:text="'NAPISZ DO WSZYSTKICH'"></a>
                 </span>
             </td>
             <td class="usermenu50">
                 <span>
-                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/communities/member/emailToSome/' + ${community.id}}" th:text="'NAPISZ DO NIEKTÓRYCH'"></a>
+                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/email/emailToSome/' + ${community.id}}" th:text="'NAPISZ DO NIEKTÓRYCH'"></a>
                 </span>
             </td>
         </tr>

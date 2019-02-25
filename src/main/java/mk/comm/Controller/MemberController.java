@@ -2,7 +2,6 @@ package mk.comm.Controller;
 
 import mk.comm.Community.Community;
 import mk.comm.Comparators.MemberComparator;
-import mk.comm.Email.Email;
 import mk.comm.Member.Member;
 import mk.comm.Member.MemberAttr;
 import mk.comm.Service.CommunityService;
@@ -17,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -61,27 +59,29 @@ public class MemberController {
                               @Valid @ModelAttribute Member member, BindingResult result, Model model){
 
         User user = currentUser.getUser();
-        if (result.hasErrors()) {
-            model = addToModelMemberData(model, user, member);
-            return "/member/addMember";
-        }
-        Long idComm = member.getCommunityId();
-        boolean admHasRights = false;
-        if (idComm >0) {
-            List<Community> communities = communityService.findAllByUserId(user.getId());
-            if (communities !=null) {
-                for (Community comm : communities) {
-                    if (comm.getId() == idComm) {
-                        admHasRights = true;
-                        member.setToken(UUID.randomUUID().toString());
+        if (member != null && checkUserRightsToModifyMember(user, member)) {
+            if (result.hasErrors()) {
+                model = addToModelMemberData(model, user, member);
+                return "/member/addMember";
+            }
+            Long idComm = member.getCommunityId();
+            boolean admHasRights = false;
+            if (idComm > 0) {
+                List<Community> communities = communityService.findAllByUserId(user.getId());
+                if (communities != null) {
+                    for (Community comm : communities) {
+                        if (comm.getId() == idComm) {
+                            admHasRights = true;
+                            member.setToken(UUID.randomUUID().toString());
+                        }
                     }
                 }
             }
-        }
-        if (admHasRights) {
-            memberService.save(member); // we do a lot of efforts not to let unauthorized save.
-            String x = getReturnToDetails(member);
-            if (x != null) return x;
+            if (admHasRights) {
+                memberService.save(member); // we do a lot of efforts not to let unauthorized save.
+                String x = getReturnToDetails(member);
+                if (x != null) return x;
+            }
         }
         return "redirect:/admin/communities";
     }
@@ -95,30 +95,26 @@ public class MemberController {
         User user = currentUser.getUser();
         if (idMemb >0) {
             Member member = memberService.findById(idMemb);
-            if (member != null && member.getCommunityId() >0) {
-                Community community = communityService.findById(member.getCommunityId());
-                if (community != null && community.getUserId() == user.getId()) {
-                    model = addToModelMemberData(model, user, member);
-                    return "/member/addMember";
-                }
-                String x = getReturnToDetails(member);
-                if (x != null) return x;
+            if (member != null && member.getCommunityId() >0 && checkUserRightsToModifyMember(user, member)) {
+                model = addToModelMemberData(model, user, member);
+                return "/member/addMember";
             }
-
+            String x = getReturnToDetails(member);
+            if (x != null) return x;
         }
         return "redirect:/admin/communities";
     }
 
 
     @GetMapping("/addMarriage/{idMemb}")
-    public String memberMarriage (@AuthenticationPrincipal CurrentUser currentUser, @PathVariable Long idMemb, Model model){
+    public String memberMarriage (@AuthenticationPrincipal CurrentUser currentUser, @PathVariable Long idMemb, Model model) {
         User user = currentUser.getUser();
         Member member = null;
         Member member2 = null;
         Community community = null;
         if (idMemb > 0) {
             member = memberService.findById(idMemb);
-            if (member != null && member.getCommunityId() >0 ) {
+            if (member != null && member.getCommunityId() > 0 && checkUserRightsToModifyMember(user, member)) {
                 community = communityService.findById(member.getCommunityId());
                 if (member.getMarried() > 0) {
                     member2 = memberService.findById(member.getMarried());
@@ -140,7 +136,8 @@ public class MemberController {
                         marriages = memberService.findAllNotMarriedBySex('M');
                         marriages.sort(memberComparator);
                     } else {
-                        if (community.getId() >0)return "redirect:admin/communities/view/communities/"+community.getId();
+                        if (community.getId() > 0)
+                            return "redirect:admin/communities/view/communities/" + community.getId();
                         else return "redirect:/admin/communities";
                     }
                     if (marriages != null) {
@@ -159,8 +156,9 @@ public class MemberController {
     @PostMapping("/addMarriage")
     public String memberMarriageSave (@AuthenticationPrincipal CurrentUser currentUser,
                                       @ModelAttribute Member member){
+        User user = currentUser.getUser();
         Member member1 = null;
-        if (member != null && member.getMarried() >0) {
+        if (member != null && member.getMarried() >0 && checkUserRightsToModifyMember(user, member)) {
             member1 = memberService.findById(member.getMarried());
             member = memberService.findById(member.getId());
             if (member != null && member1 != null) {
@@ -186,7 +184,7 @@ public class MemberController {
         User user = currentUser.getUser();
         Community community = null;
         Member member2 = null;
-        if (member1 != null && member1.getId() > 0 && member1.getCommunityId() > 0) {
+        if (member1 != null && member1.getId() > 0 && member1.getCommunityId() > 0 && checkUserRightsToModifyMember(user, member1)) {
             community = communityService.findById(member1.getCommunityId());
             member1 = memberService.findById(member1.getId());
             if (member1.getMarried() >0 && community.getUserId() == user.getId()) {
@@ -208,6 +206,7 @@ public class MemberController {
     @GetMapping("/view/{idMember}")
     public String memberView (@AuthenticationPrincipal CurrentUser currentUser,
                               @PathVariable Long idMember, Model model){
+
         if (idMember > 0) {
             User user = currentUser.getUser();
             Member member = memberService.findById(idMember);
@@ -275,194 +274,13 @@ public class MemberController {
         return "redirect:/admin/communities";
     }
 
-    @GetMapping("/email/{idMemb}")
-    public String sendEmailForm (@AuthenticationPrincipal CurrentUser currentUser, @PathVariable Long idMemb, Model model) {
-        User user = currentUser.getUser();
-        if (idMemb >0) {
-            Member member = memberService.findById(idMemb);
-            if (member != null) {
-                Community community = new Community();
-                if (member.getCommunityId() >0) {
-                    community = communityService.findById(member.getCommunityId());
-                }
-                if (community == null || community.getName() == null) {
-                    community.setName("Brak nazwy wspólnoty");
-                }
-                if (member.getEmail() != null && !member.getEmail().equals("")) {
-                    Email email = new Email();
-                    email.setEmailTo(member.getEmail());
-                    model.addAttribute("iam",user);
-                    model.addAttribute("community", community);
-                    model.addAttribute("email", email);
-                    model.addAttribute("member", member);
-                    return "/email/emailToOne";
-                }
-                if (member.getCommunityId() > 0) {
-                    return "redirect:/admin/communities/view/" + member.getCommunityId();
-                }
-            }
-        }
-        return "redirect:/admin/communities";
-    }
-    @PostMapping("/email/{idMemb}")
-    public String sendEmailAction (@AuthenticationPrincipal CurrentUser currentUser,
-                                   @PathVariable Long idMemb, @ModelAttribute Email email) {
-        User user = currentUser.getUser();
-        String userFullName = null;
-        if (user != null && user.getName() != null) {
-            userFullName = user.getName();
-            if (user.getSurname() != null) {
-                userFullName = userFullName + " " + user.getSurname();
-            }
-        }
-        Community community = null;
-        String communityName = null;
-        Member member = null;
-        if (idMemb >0) {
-            member = memberService.findById(idMemb);
-            if (member != null && member.getId() >0) {
-                String emailMemb = member.getEmail();
-                String memberFullname = member.getName();
-                if (memberFullname != null) {
-                    if (member.getSurname() != null) {
-                        memberFullname = memberFullname + ' ' + member.getSurname();
-                    }
-                }
-                if (member.getCommunityId() > 0) {
-                    community = communityService.findById(member.getCommunityId());
-                    communityName = community.getName();
-                }
-                String sentBy = "Email wysłany przez : ";
-                if (userFullName != null) {
-                    sentBy = sentBy + userFullName;
-                }
-                if (emailMemb != null && emailMemb != "" && emailMemb.equals(email.getEmailTo())) {
-                    sentBy = sentBy + " (" + user.getUsername() + ")";
-                    Context context = new Context();
-                    context.setVariable("header", email.getEmailHead());
-                    context.setVariable("title", "Witaj " + member.getName() + ' ' + member.getSurname() + "!");
-                    context.setVariable("description", email.getEmailText());
-                    context.setVariable("sentBy", sentBy);
-                    String body = templateEngine.process("templateMail", context);
-                    emailSender.sendEmail(email.getEmailTo(), communityName, body);
-                    if (email.isSelfSend()) {
-                        emailSender.sendEmail(user.getUsername(),communityName, body);
 
-                    }
-                }
-                if (member.getCommunityId() >0) {
-                    return "redirect:/admin/communities/view/" + member.getCommunityId();
-                }
-            }
-        }
-        return "redirect:/admin/communities";
-    }
 
-    @GetMapping("/emailToAll/{idComm}")
-    public String emailAll (@AuthenticationPrincipal CurrentUser currentUser,
-                            @PathVariable Long idComm, Model model) {
-        User user = currentUser.getUser();
-        if ( user != null && user.getId() >0 && idComm >0) {
-            Community community = communityService.findById(idComm);
-            if (community != null && community.getUserId() > 0) {
-                if (user.getId() == community.getUserId()) {
-                    // here everything seems ok, we can start
-                    List<Member> members = memberService.findAllByCommunityId(community.getId());
-                    for (Member member : members) {
-                        member.setDoSomeAction(true);
-                    }
-                    model.addAttribute("iam",user);
-                    model.addAttribute("members", members);
-                    model.addAttribute("community", community);
-                    return "/email/sendMemberEmailSome";
-                }
-            }
-        }
-        return "redirect:/admin/communities";
-    }
-    @GetMapping("/emailToSome/{idComm}")
-    public String emailSome (@AuthenticationPrincipal CurrentUser currentUser,
-                             @PathVariable Long idComm, Model model) {
-        User user = currentUser.getUser();
-        if ( user != null && user.getId() >0 && idComm >0) {
-            Community community = communityService.findById(idComm);
-            if (community != null && community.getUserId() > 0) {
-                if (user.getId() == community.getUserId()) {
-                    // here everything seems ok, we can start
-                    List<Member> members = memberService.findAllByCommunityId(community.getId());
-                    for (Member member : members) {
-                        member.setDoSomeAction(false);
-                    }
-                    model.addAttribute("iam",user);
-                    model.addAttribute("members", members);
-                    model.addAttribute("community", community);
-                    return "/email/sendMemberEmailSome";
-                }
-            }
-        }
-        return "redirect:/admin/communities";
-    }
 
-    @PostMapping("/emailToSome/{idComm}")
-    public String sendEmaillToMany(@AuthenticationPrincipal CurrentUser currentUser,
-                                   @PathVariable Long idComm,
-                                   @RequestParam(value = "mailIds", required = false) long[] mailIds,
-                                   @RequestParam(value = "emailHead", required = false) String emailHead,
-                                   @RequestParam(value = "emailText", required = false) String emailText){
-
-        User user = currentUser.getUser();
-        if (user != null) {
-            if (emailHead == null) emailHead = "Brak Tematu";
-            String sentBy = "Email wysłany przez : ";
-            Community community;
-            String communityName = "";
-            if (user.getName() != null) {
-                sentBy = sentBy + user.getName();
-                if (user.getSurname() != null) {
-                    sentBy = sentBy + " " + user.getSurname();
-                }
-            }
-            if (idComm > 0) {
-                community = communityService.findById(idComm);
-                if (community != null) {
-                    communityName = community.getName();
-
-                    if (mailIds != null && mailIds.length > 0) {
-                        for (int i = 0; i < mailIds.length; i++) {
-                            if (mailIds[i] > 0) {
-                                // set full name
-                                Member member = memberService.findById(mailIds[i]);
-                                if (member != null && member.getCommunityId() == idComm) {
-                                    String emailMemb = member.getEmail();
-                                    String memberFullname = member.getName();
-                                    if (memberFullname != null && member.getSurname() != null) {
-                                        memberFullname = memberFullname + ' ' + member.getSurname();
-                                    }
-
-                                    if (emailMemb != null && emailMemb != "") {
-                                        Context context = new Context();
-                                        context.setVariable("header", "Email wspólnotowy. " + communityName);
-                                        context.setVariable("title", "Witaj " + memberFullname + " !");
-                                        context.setVariable("description", emailText);
-                                        context.setVariable("sentBy", sentBy);
-                                        String body = templateEngine.process("templateMail", context);
-                                        emailSender.sendEmail(emailMemb, emailHead, body);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    return "redirect:/admin/communities/view/" + idComm;
-                }
-            }
-            return "redirect:/admin/communities";
-        }
-        return "redirect:/";
-    }
 //********************************************************************************************************************
     // *** here we check credentioals - if user can modify member
     // ** check if USER exists is not null and has id >0 alo if MEMBER exists and has community info
-    private boolean checkUserRightsToModifyMember (User user, Member member) {
+    protected boolean checkUserRightsToModifyMember (User user, Member member) {
         boolean right = false;
         // check if member is not null and has community id information
         if (user != null && user.getId() >0 && member != null && member.getId() > 0 && member.getCommunityId() > 0) {
@@ -502,13 +320,15 @@ public class MemberController {
     }
 // **************** returns string adress to detail of the member
     private String getReturnToDetails(@ModelAttribute @Valid Member member) {
-        if (member.getId() > 0) {
-            return "redirect:/admin/communities/member/view/" + member.getId();
-        }
-        if (member.getCommunityId() > 0) {
-            return "redirect:/admin/communities/view/" + member.getCommunityId();
+        if (member!= null) {
+            if (member.getId() > 0) {
+                return "redirect:/admin/communities/member/view/" + member.getId();
+            }
+            if (member.getCommunityId() > 0) {
+                return "redirect:/admin/communities/view/" + member.getCommunityId();
+            }
         }
         return null;
     }
-
+    // END ***** getReturnToDetails ******
 }

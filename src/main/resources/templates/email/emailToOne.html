@@ -43,7 +43,7 @@
             </td>
         </tr>
     </table>
-    <form th:action="@{'/admin/communities/member/email/' + ${member.id}}" th:object="${email}" method="post">
+    <form th:action="@{'/admin/email/' + ${member.id}}" th:object="${email}" method="post">
         <input type="hidden" th:field="*{emailTo}"/>
         <div class="container">
             <br><br>
@@ -51,33 +51,32 @@
                 <div class="card-body">
                     <table class="usermenutable">
                         <tr>
-                            <td class="usermenu10">
+                            <td class="usermenu30">
                                 <div style="text-align: center">EMAIL DO :</div>
                             </td>
-                            <td class="usermenu90">
-                                <div style="text-align: left" th:text="*{emailTo}"></div>
+                            <td class="usermenu70">
+                                <div class="btn btn-secondary usermenu" style="text-align: left" th:text="*{emailTo}"></div>
                             </td>
                         </tr>
                         <tr>
-                        <tr>
-                            <td class="usermenu100">
-                                <div class="btn btn-secondary usermenu" style="text-align: center">WPISZ TEMAT WIADOMOŚCI</div>
+                            <td class="usermenu30">
+                                <div style="text-align: center">WPISZ TEMAT WIADOMOŚCI</div>
                             </td>
-                        </tr>
-                        <tr>
-                            <td class="usermenu100">
+                            <td class="usermenu70">
                                 <input class ="full" name="emailHead" type="text"/>
                             </td>
                         </tr>
                         <tr><td></td></tr>
-                            <td class="usermenu10">
+                        <tr>
+                            <td class="usermenu30">
                                 <div style="text-align: center">WPISZ TEKST WIADOMOŚCI</div>
                             </td>
-                            <td class="usermenu90">
+                            <td class="usermenu70">
                                 <textarea rows="4" class ="full" th:field="*{emailText}"/>
                                 </textarea>
                             </td>
                         </tr>
+                    </table>
 
                     <table class="usermenutable">
                         <tr>
