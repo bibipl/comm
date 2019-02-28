@@ -100,13 +100,12 @@ public class EmailController {
                 }
                 String sentBy = "Email wysłany przez : ";
                 if (userFullName != null) {
-                    sentBy = sentBy + userFullName;
+                    sentBy = sentBy + userFullName + " (" + user.getUsername() + ")";
                 }
                 if (emailMemb != null && emailMemb != "" && emailMemb.equals(email.getEmailTo())) {
-                    sentBy = sentBy + " (" + user.getUsername() + ")";
                     Context context = new Context();
                     context.setVariable("header", email.getEmailHead());
-                    context.setVariable("title", "Witaj " + member.getName() + ' ' + member.getSurname() + "!");
+                    context.setVariable("title", "Cześć " + member.getName() + " !");
                     context.setVariable("description", email.getEmailText());
                     context.setVariable("sentBy", sentBy);
                     String body = templateEngine.process("templateMail", context);

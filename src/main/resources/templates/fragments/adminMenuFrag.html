@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pl">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="adminHeader">
+    <title>ADMIN</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/my.css}" rel="stylesheet"/>
+</head>
+
+<table th:fragment="uppermenu" class="usermenutable">
+    <tr>
+        <td class="usermenu20">
+            <span>
+                <a class="btn btn-warning usermenu"  th:href="@{'/'}" th:text="'MENU GŁÓWNE'">
+                </a>
+            </span>
+        </td>
+        <td class="usermenu50">
+            <span>
+                <a class="btn btn-success usermenu"  th:href="@{'/admin/'}" th:text="'ADMINISTRATOR: ' + ${iam.name} + ' ' + ${iam.surname}">
+                </a>
+            </span>
+        </td>
+        <td class="usermenu20">
+            <span>
+                <a class="btn btn-info usermenu"  th:href="@{'/user/'}">
+                   CZŁONEK
+                </a>
+            </span>
+        </td>
+        <td class="usermenu10">
+            <span>
+                <form th:action="@{/logout}" method="post" >
+                    <input class="btn btn-warning usermenu" type="submit" value="WYLOGUJ"/>
+                </form>
+            </span>
+        </td>
+    </tr>
+
+</table>
+
+<table th:fragment="adminmenu" class="usermenutable">
+    <tr>
+        <td class="usermenu50">
+                <span>
+                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/communities'}">
+                        WSPÓLNOTY
+                    </a>
+                </span>
+        </td>
+        <td class="usermenu50">
+                <span>
+                    <a class="btn btn-secondary usermenu" th:href="@{'/admin/groups'} ">
+                        GRUPY
+                    </a>
+                </span>
+        </td>
+    </tr>
+</table>
+

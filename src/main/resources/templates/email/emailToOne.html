@@ -43,7 +43,7 @@
             </td>
         </tr>
     </table>
-    <form th:action="@{'/admin/email/' + ${member.id}}" th:object="${email}" method="post">
+    <form th:action="@{'/admin/email/email/' + ${member.id}}" th:object="${email}" method="post">
         <input type="hidden" th:field="*{emailTo}"/>
         <div class="container">
             <br><br>

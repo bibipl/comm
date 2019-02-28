@@ -29,7 +29,10 @@ public class AdminController {
     @Autowired
     TemplateEngine templateEngine;
 
-    //************* basic for admin after loging ***************//
+    //************* basic for admin after loging ***********************//
+    //*** if you are here means you have your own community to rule ****//
+    //*** so show your resources ***************************************//
+    //*** **************************************************************//
     @GetMapping("/")
     public String adminStart(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         User user = currentUser.getUser();
@@ -41,8 +44,31 @@ public class AdminController {
         }
         return "landing";
     }
+    //************************************************//
+    //***  here admin wants to update admin's data  ***//
+    //************************************************//
+    @GetMapping("/edit")
+    public  String editSelfAdmin () {
+        return"";
+    }
 
+    @PostMapping("/edit")
+    public  String editSelfAdminAction () {
+        return"";
+    }
+    //******************************************************************//
+    //***  here admin wants to delete admin's data  *******************//
+    //****we want to be sure all the related data are also deleted ***//
+    //***************************************************************//
 
+    @GetMapping("/delete")
+    public  String deleteSelfAdmin () {
+        return"";
+    }
+    @PostMapping("/delete")
+    public  String deleteSelfAdminAction () {
+        return"";
+    }
 
 
 
