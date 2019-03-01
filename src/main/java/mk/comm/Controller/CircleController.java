@@ -42,8 +42,8 @@ public class CircleController {
               Group group = groupService.findById(idGroup);
               List<Member> membersCircleFree = membersNotInTheCircleYet(group);
               Circle circle = new Circle();
+              circle.setGroupId(idGroup);
               model.addAttribute("idComm", group.getIdCommunity());
-              model.addAttribute("idGro", idGroup);
               model.addAttribute("circle", circle);
               model.addAttribute("members", membersCircleFree);
               model.addAttribute("iam", user);
@@ -55,16 +55,21 @@ public class CircleController {
     }
     @PostMapping ("/addCircle/{idGroup}")
     public String addCircleAction (@AuthenticationPrincipal CurrentUser currentUser,
-                                   @PathVariable Long idGroup,
                                    @RequestParam(value = "circleMembers", required = false) long[] circleMembers,
                                    @ModelAttribute Circle circle, BindingResult result) {
         User user = currentUser.getUser();
-        if (circle.getId() > 0) {
-            circle = circleService.findById(circle.getId());
+        if ( circle != null && circle.getGroupId() != null && circle.getGroupId() >0 &&
+             checkAdminCreentialGroup(user, circle.getGroupId())) {
+
+            //**** below if we edit, we will find edited circle by id, else - new circle *****//
+            if (circle.getId() != null && circle.getId() > 0) {
+                circle = circleService.findById(circle.getId());
+            }
+            addCircleAction(user, circle.getGroupId(), circleMembers, circle);
+            if (circle.getGroupId() >0 ) {
+                return "redirect:/admin/groups/view/" + circle.getGroupId();
+            }
         }
-        addCircleAction(user, idGroup, circleMembers, circle);
-        if (idGroup >0 )
-            return "redirect:/admin/groups/view/" + idGroup;
         return "redirect:admin/groups";
     }
 
@@ -248,7 +253,7 @@ public class CircleController {
     // with table of members' ids and id of the group (circle belongs to) and circle partly filled (in the form) creeates cicrcle with members
     // it check user if has credential to make a change.
     private void addCircleAction(User user, Long idGroup, long[] circleMembers, Circle circle) {
-        if ( checkAdminCreentialGroup(user, idGroup) && circleMembers != null) {
+        if ( checkAdminCreentialGroup(user, idGroup)) {
             Group group = groupService.findById(idGroup);
             // numeracja k©egów zmienić na max number +1 !!!!!
             int numOfCircles = circleService.countAllByGroupId(group.getId());
@@ -257,25 +262,24 @@ public class CircleController {
                 circle.setNumber(numOfCircles + 1);
             }
             // Add all new members to the circle
-            for (long idMemb : circleMembers) {
-                Member member = memberService.findById(idMemb);
-                if (member != null){
-                    circle.getMembers().add(member);
-                    if (member.getMarried() == circle.getResponsible() && member.getSex() == 'M') {
-                        circle.setResponsible(member.getId());
+            if (circleMembers != null) {
+                for (long idMemb : circleMembers) {
+                    Member member = memberService.findById(idMemb);
+                    if (member != null) {
+                        circle.getMembers().add(member);
+                        if (member.getMarried() == circle.getResponsible() && member.getSex() == 'M') {
+                            circle.setResponsible(member.getId());
+                        }
                     }
                 }
             }
-            if (circle.getResponsible() == 0 && circle.getMembers() != null) {
+            if (circle.getResponsible() != null && circle.getResponsible() == 0 && circle.getMembers() != null) {
                 circle.setResponsible(circle.getMembers().get(0).getId()); /// here to be taken by checkbox - save circle and go to choose responsible, with checked (0)
-            }
+            } else {circle.setResponsible((long)0);}
             if (circle.getGroupId() == 0) {
                 circle.setGroupId(group.getId());
             }
-            if (circle.getId() == null) {
-                circleService.save(circle); // no id's save not properly sorted we have to save 2x
-            }
-            circle=Circle.SortByName(circle);
+             if (circle.getMembers() != null) {circle=Circle.SortByName(circle);}
             circleService.save(circle);
         }
     }

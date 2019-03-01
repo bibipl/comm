@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pl">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table th:fragment="showMembUpMenu" class="usermenutable">
+    <tr>
+        <td class="usermenu20">
+                            <span>
+                                <a class="btn btn-warning usermenu"  th:href="@{'/'}" th:text="'MENU GŁÓWNE'">
+                                </a>
+                            </span>
+        </td>
+        <td class="usermenu30">
+                            <span>
+                                <a class="btn btn-success usermenu"  th:href="@{'/admin/'}" th:text="'ADMINISTRATOR: ' + ${iam.name} + ' ' + ${iam.surname}">
+                                   ADMINISTRATOR WSPÓLNOTY
+                                </a>
+                            </span>
+        </td>
+        <td class="usermenu20">
+                            <span>
+                                <a class="btn btn-secondary usermenu"  th:href="@{'/admin/groups'}">
+                                  GRUPY
+                                </a>
+                            </span>
+        </td>
+        <td class="usermenu20">
+                            <span>
+                                <a class="btn btn-info usermenu"  th:href="@{'/admin/communities/add'}">
+                                   (+) WSPÓLNOTA (+)
+                                </a>
+                            </span>
+        </td>
+        <td class="usermenu10">
+                    <span>
+                        <form th:action="@{/logout}" method="post" >
+                            <input class="btn btn-warning usermenu" type="submit" value="WYLOGUJ"/>
+                        </form>
+                    </span>
+        </td>
+    </tr>
+</table>
+
+
+</body>
+</html>

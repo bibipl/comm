@@ -72,7 +72,9 @@ public class GroupController {
                 Community community = communityService.findById(idComm);
                 List<Group> groups = new ArrayList<>();
                 if (community != null) {
+                    long numberMemb = memberService.countAllByCommunityId(idComm);
                     groups = groupService.findAllByIdCommunity(community.getId());
+                    model.addAttribute("numberMemb" ,numberMemb);
                     model.addAttribute("idComm", community.getId());
                     model.addAttribute("communities", community);
                     model.addAttribute("allGroups", groups);

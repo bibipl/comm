@@ -13,6 +13,11 @@
 </head>
 
 <body>
+
+
+<button th:fragment="commDescrButt" type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'WSPÓLNOTA : ' + ${community.name}
+        + ' | ADMINISTRATOR WSPÓLNOTY : ' + ${iam.name} + ' ' + ${iam.surname} + ' | Liczba osób: ' + ${numberMemb}"></button>
+
     <table th:fragment="commUpMenu" class="usermenutable">
         <tr>
             <td class="usermenu20">

@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang = "pl" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>GRUPY</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
-    <link th:href="@{/css/my.css}" rel="stylesheet"/>
-</head>
+
+<th:head th:replace="/fragments/commFrag :: commHeader"></th:head>
+
 <body>
 <form th:action="@{'/admin/circles/editCircle'}" th:object="${circle}" method="post">
     <input type="hidden" th:field="*{id}"/>
@@ -14,7 +10,7 @@
     <table class="usermenutable">
         <tr>
             <td class="usermenu70"><span><input type="submit" class="btn btn-lg btn-success full" value="ZAPISZ"/></span></td>
-            <td class="usermenu30"><a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/groups/view/' + ${circle.groupItino13d}}" th:text="'Powrót do wspólnoty'"></a></td>
+            <td class="usermenu30"><a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/groups/view/' + ${circle.groupId}}" th:text="'Powrót do wspólnoty'"></a></td>
         </tr>
     </table>
 </form>

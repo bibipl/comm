@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>GRUPY</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
-    <link th:href="@{/css/my.css}" rel="stylesheet"/>
-</head>
+
+<th:head th:replace="/fragments/commFrag :: commHeader"></th:head>
+
 <body>
 <div class="container">
     <table class="usermenutable">
@@ -51,10 +47,13 @@
     </table>
     <table th:if="${idComm}" class="usermenutable">
         <tr>
-            <td class="usermenu100">
+            <td class="usermenu70">
                 <a  class="btn btn-info usermenu"  th:href="@{'/admin/groups/random/' + ${idComm}}">
                    Losowanie kręgów
                 </a>
+            </td>
+            <td  class="usermenu30">
+                <span class="btn btn-info usermenu" th:text="'Liczba członków wspólnoty: ' + ${numberMemb}"></span>
             </td>
         </tr>
     </table>

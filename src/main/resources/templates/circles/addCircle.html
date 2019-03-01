@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang = "pl" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>GRUPY</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
-    <link th:href="@{/css/my.css}" rel="stylesheet"/>
-</head>
+
+<th:head th:replace="/fragments/commFrag :: commHeader"></th:head>
+
 <body>
 <div class="container">
+
     <button type="button" class="btn btn-lg btn-secondary btn-block" disabled th:text="'NOWY PODZIAŁ NA KRĘGI'
     + ' ADMINISTRATOR WSPÓLNOTY : ' + ${iam.name} + ' ' + ${iam.surname}"></button>
+
     <table class="usermenutable">
         <tr>
             <td class="usermenu20">
@@ -99,6 +97,7 @@
             <div class="card">
                 <div class="card-body">
                     <input type="hidden" th:field="*{id}"/>
+                    <input type="hidden" th:field="*{groupId}"/>
                     <table class="usermenutable">
                         <thead>
                         <tr>

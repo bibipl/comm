@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
-    <link th:href="@{/css/my.css}" rel="stylesheet"/>
-</head>
+
+<th:head th:replace="/fragments/commFrag :: commHeader"></th:head>
+
 <body class="start">
 <h1>REJESTRACJA NOWEGO UŻYTKOWNIKA</h1>
 <a th:href="@{/}" class="btn btn-info" style="width: 100%">MENU</a>

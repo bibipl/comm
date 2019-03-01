@@ -1,92 +1,53 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>ADMIN</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
-    <link th:href="@{/css/my.css}" rel="stylesheet"/>
-</head>
-<body>
-<div class="container">
-    <table class="usermenutable">
-        <tr>
-            <td class="usermenu20">
-                        <span>
-                            <a class="btn btn-warning usermenu"  th:href="@{'/'}" th:text="'MENU GŁÓWNE'">
-                            </a>
-                        </span>
-            </td>
-            <td class="usermenu30">
-                        <span>
-                            <a class="btn btn-success usermenu"  th:href="@{'/admin/'}" th:text="'ADMINISTRATOR: ' + ${iam.name} + ' ' + ${iam.surname}">
-                               ADMINISTRATOR WSPÓLNOTY
-                            </a>
-                        </span>
-            </td>
-            <td class="usermenu20">
-                        <span>
-                            <a class="btn btn-secondary usermenu"  th:href="@{'/admin/groups'}">
-                              GRUPY
-                            </a>
-                        </span>
-            </td>
-            <td class="usermenu20">
-                        <span>
-                            <a class="btn btn-info usermenu"  th:href="@{'/admin/communities/add'}">
-                               (+) WSPÓLNOTA (+)
-                            </a>
-                        </span>
-            </td>
-            <td class="usermenu10">
-                <span>
-                    <form th:action="@{/logout}" method="post" >
-                        <input class="btn btn-warning usermenu" type="submit" value="WYLOGUJ"/>
-                    </form>
-                </span>
-            </td>
-        </tr>
-    </table>
-    <table class="usermenutable">
-        <thead>
-            <tr>
-                <th class="usermenu80">
-                    <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>WSPÓLNOTY</button>
-                </th>
-                <th class="usermenu10">
-                    <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>EDYTUJ</button>
-                </th>
-                <th class="usermenu10">
-                    <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>USUŃ</button>
 
-                </th>
-            </tr>
-        </thead>
-        <th:block th:each="community : ${communities}">
-            <tr>
-                <td class="usermenu80">
-                    <span>
-                    <a th:href="@{'/admin/communities/view/' + ${community.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${community.name}"></a>
-                </span>
-                </td>
-                <td class="usermenu10">
-                    <span>
-                        <a class="btn btn-secondary usermenu" th:href="@{'/admin/communities/edit/' + ${community.id}} ">
-                            EDYTUJ
-                        </a>
+<th:head th:replace="/fragments/commFrag :: commHeader"></th:head>
+
+<body>
+    <div class="container">
+
+        <table th:replace="/fragments/showMembUpMenu :: showMembUpMenu"></table>
+
+        <table class="usermenutable">
+            <thead>
+                <tr>
+                    <th class="usermenu80">
+                        <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>WSPÓLNOTY</button>
+                    </th>
+                    <th class="usermenu10">
+                        <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>EDYTUJ</button>
+                    </th>
+                    <th class="usermenu10">
+                        <button type="button" class="btn btn-lg btn-secondary usermenu" disabled>USUŃ</button>
+
+                    </th>
+                </tr>
+            </thead>
+            <th:block th:each="community : ${communities}">
+                <tr>
+                    <td class="usermenu80">
+                        <span>
+                        <a th:href="@{'/admin/communities/view/' + ${community.id}}" class="btn btn-primary usermenu" style="text-align: left" th:text="${community.name}"></a>
                     </span>
-                </td>
-                <td class="usermenu10">
-                    <span>
-                        <a class="btn btn-danger usermenu" th:href="@{'/admin/communities/delete/' + ${community.id}} ">
-                            USUŃ
-                        </a>
-                    </span>
-                </td>
-            </tr>
-        </th:block>
-    </table>
-    <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/'}" th:text="'Powrót do strony ADMIN'"></a>
-</div>
+                    </td>
+                    <td class="usermenu10">
+                        <span>
+                            <a class="btn btn-secondary usermenu" th:href="@{'/admin/communities/edit/' + ${community.id}} ">
+                                EDYTUJ
+                            </a>
+                        </span>
+                    </td>
+                    <td class="usermenu10">
+                        <span>
+                            <a class="btn btn-danger usermenu" th:href="@{'/admin/communities/delete/' + ${community.id}} ">
+                                USUŃ
+                            </a>
+                        </span>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+        <a class="btn btn-lg btn-secondary btn-block"  th:href="@{'/admin/'}" th:text="'Powrót do strony ADMIN'"></a>
+    </div>
 </body>
 </html>
