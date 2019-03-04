@@ -36,5 +36,10 @@ public class CommunityServiceImpl implements CommunityService{
         return communityRepository.findAllByUserId(id);
     }
 
+    @Override
+    public long countAllByUserId(long id) {
+        return communityRepository.countAllByUserId(id);
+    }
+
 
 }

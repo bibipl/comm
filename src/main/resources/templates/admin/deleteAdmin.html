@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+
+<th:head th:replace="/fragments/head :: adminHeader"></th:head>
+
+
+<body>
+<div class="container">
+    <table th:replace="/fragments/adminMenuFrag :: uppermenu"> </table>
+    <table th:replace="/fragments/adminMenuFrag :: adminmenu"> </table>
+    <form th:action="@{/admin/deleteAdmin}" method="post">
+        <div class="container">
+            <br><br>
+            <div class="card" style="width: 25%">
+                <div class="card-body">
+                    <div class="btn btn-info usermenu" th:text="'Liczba wspólnot : ' + ${numberOfComm}"></div>
+                    <div class="btn btn-info usermenu" th:text="'Liczba członków : ' + ${numberOfMembers}"></div>
+                    <div class="btn btn-warning usermenu" th:text="'Czy na pewno chcesz wszystko skasować ?'"></div>
+                    <div><input type="submit" class="btn btn-danger" style="width: 100%" value="USUŃ"/></div>
+                    <br/>
+                    <div><a th:href="@{/}" class="btn btn-info" style="width: 100%">MENU</a></div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <table class="usermenutable">
+        <tr>
+            <td class="usermenu100">
+                    <span>
+                        <a class="btn btn-success usermenu" th:href="@{'/admin/'}" th:text="'ANULUJ'"></a>
+                    </span>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+
+</html>

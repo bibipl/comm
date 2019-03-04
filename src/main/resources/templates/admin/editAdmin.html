@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+
+<th:head th:replace="/fragments/head :: adminHeader"></th:head>
+
+
+<body>
+<div class="container">
+    <table th:replace="/fragments/adminMenuFrag :: uppermenu"> </table>
+    <table th:replace="/fragments/adminMenuFrag :: adminmenu"> </table>
+    <form th:action="@{/admin/editAdmin}" th:object="${iam}" method="post">
+        <div class="container">
+            <br><br>
+            <div class="card" style="width: 25%">
+                <div class="card-body">
+                    <input type="hidden" th:field="*{id}"/>
+                    <p>UWAGA - zmiany zostaną uwzględnione dopiero po ponownym zalogowaniu.</p>
+                    <div class="form-group"><label> PODAJ IMIĘ <input type="text" th:field="*{name}" class="form-control"/></label></div>
+                    <div class="form-group"><label> PODAJ NAZWISKO <input type="text" th:field="*{surname}" class="form-control"/></label></div>
+                    <div><input type="submit" class="btn btn-primary" style="width: 100%" value="ZMIEŃ"/></div>
+                    <br/>
+                    <br/>
+                    <div><a th:href="@{/}" class="btn btn-info" style="width: 100%">MENU</a></div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <table class="usermenutable">
+        <tr>
+            <td class="usermenu40">
+                    <span>
+                        <a class="btn btn-secondary usermenu" th:href="@{'/admin/changeEmail'}" th:text="'ZMIEŃ EMAIL'"></a>
+                    </span>
+            </td>
+            <td class="usermenu40">
+                    <span>
+                        <a class="btn btn-secondary usermenu" th:href="@{'/admin/changePassword'}" th:text="'ZMIEŃ HASŁO'"></a>
+                    </span>
+            </td>
+            <td class="usermenu20">
+                    <span>
+                        <a class="btn btn-danger usermenu" th:href="@{'/admin/deleteAdmin'}" th:text="'USUŃ KONTO'"></a>
+                    </span>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+
+</html>

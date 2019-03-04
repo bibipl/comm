@@ -10,6 +10,7 @@ public interface CommunityService {
     void delete (Community community);
     Community findById (Long id);
     List<Community> findAllByUserId (Long id);
+    long countAllByUserId (long id);
 
 
 }
