@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+
+<th:head th:replace="/fragments/head :: adminHeader"></th:head>
+
+<!--we take vars: error (int); adminEmail, adminEmailCheck - String  -->
+<body>
+<div class="container">
+    <!-- <table th:replace="/fragments/adminMenuFrag :: uppermenu"> </table> -->
+    <table th:replace="/fragments/adminMenuFrag :: adminmenu"> </table>
+
+    <form th:action="@{/admin/changeAdminEmail/0}" method="post">
+        <div class="container">
+            <br>
+            <div class="card" style="width: 100%">
+                <div class="card-body">
+                    <div class="btn btn-info usermenu" th:text="'Twój obecny email/login: ' + ${adminEmail}"></div>
+                </div>
+                <p th:if="${error % 2 == 1}" class="error" th:text="'pole email nie może być puste'"></p>
+                <p th:if="${error ==2 or error == 3}" class="error" th:text="'maile powinny być takie same'"></p>
+                <p th:if="${error > 3 and error < 8}" class="error" th:text="'mail powinien zawierać jedną @ i co najmniej jedną kropkę'"></p>
+                <p th:if="${error > 7}" class="error" th:text="'Taki email już został zarejestrowany. wyboerz inny mail'"></p>
+                <div class="form-group"><label> podaj email <input type="text"  name="adminEmail" class="form-control"/></label></div>
+                <div class="form-group"><label> powtórz email <input type="text" name="adminEmailCheck" class="form-control"/></label></div>
+
+                <div><input type="submit" class="btn btn-danger" style="width: 100%" value="ZMIEŃ email"/></div>
+            </div>
+        </div>
+    </form>
+    <br>
+    <table class="usermenutable">
+        <tr>
+            <td class="usermenu100">
+                    <span>
+                        <a class="btn btn-success usermenu" th:href="@{'/admin/editAdmin'}" th:text="'ANULUJ'"></a>
+                    </span>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+
+</html>

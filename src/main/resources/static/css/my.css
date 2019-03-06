@@ -206,6 +206,13 @@
     transform: rotate(45deg);
 }
 
+.error {
+    border: solid black;
+    background-color: white;
+    color: red;
+    font-size: smaller;
+}
+
 
 
 

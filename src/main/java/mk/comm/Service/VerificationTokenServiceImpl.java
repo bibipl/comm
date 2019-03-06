@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -27,11 +28,30 @@ public class VerificationTokenServiceImpl implements VerificationTokenService{
 
     @Override
     public void save(VerificationToken verificationToken) {
+        LocalDate date = LocalDate.now();
+        verificationToken.setDate(date);
         verificationTokenRepository.save(verificationToken);
+        // below we delete all tokens created more than 1-2 days ago. just to keep order
+        List<VerificationToken> tokens = findAllByDateLessThan(date.minusDays(2));
+        if (tokens != null) {
+            for (VerificationToken token : tokens) {
+                verificationTokenRepository.delete(token);
+            }
+        }
     }
 
     @Override
     public void delete(VerificationToken verificationToken) {
         verificationTokenRepository.delete(verificationToken);
+    }
+
+    @Override
+    public List<VerificationToken> findAllByDateLessThan(LocalDate date) {
+        return verificationTokenRepository.findAllByDateLessThan(date);
+    }
+
+    @Override
+    public VerificationToken findByToken(String token) {
+        return verificationTokenRepository.findByToken(token);
     }
 }

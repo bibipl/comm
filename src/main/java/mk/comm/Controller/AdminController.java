@@ -8,14 +8,19 @@ import mk.comm.Role.Role;
 import mk.comm.Service.*;
 import mk.comm.User.CurrentUser;
 import mk.comm.User.User;
+import mk.comm.verificationToken.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Controller
@@ -36,6 +41,8 @@ public class AdminController {
     EmailSender emailSender;
     @Autowired
     TemplateEngine templateEngine;
+    @Autowired
+    VerificationTokenService verificationTokenService;
 
 
     //************* basic for admin after loging ***********************//
@@ -166,5 +173,92 @@ public class AdminController {
         return"/landing";
     }
 
+    @GetMapping ("/changeAdminEmail/{error}")
+    public String changeAdminEmail (@AuthenticationPrincipal CurrentUser currentUser, Model model,
+                                    @PathVariable int error) {
+        //*** int error : 1- email null or ""; 2- email and check differ; 4- does not lokk as an email
+        //*** we sent erroe, Srting email and empty emaicCeck
+        User user = currentUser.getUser();
+        if (user != null && user.getId() != null && user.getId() != 0) {
+            String adminEmail = user.getUsername();
+            if (adminEmail == null) adminEmail = "";
+            model.addAttribute("error", error);
+            model.addAttribute("adminEmail", adminEmail);
+            model.addAttribute("adminEmailCheck", "");
+            return ("/admin/changeAdminEmail");
+        }
+        return ("/admin/changeAdminEmail");
+    }
+    @PostMapping ("/changeAdminEmail/{error}")
+    public String changeAdminEmailAction (@AuthenticationPrincipal CurrentUser currentUser,
+                                          @RequestParam(value = "adminEmail", required = false) String adminEmail,
+                                          @RequestParam(value = "adminEmailCheck", required = false) String adminEmailCheck,
+                                          @PathVariable int error,
+                                          Model model) {
+
+
+        Pattern p = Pattern.compile("[^@]+@[^@]+\\.[^@]+");
+        // simple regex for an email. So far, no nedd for more complex
+        Matcher matcher = null;
+        if (adminEmail != null) {
+            matcher = p.matcher(adminEmail);
+        }
+        boolean emaiExistsInDatabase = false;
+        if (matcher != null && matcher.find() && adminEmailCheck != null && adminEmail.equals(adminEmailCheck)) {
+            User checkEmail = userService.findByUsername(adminEmail);
+            if (checkEmail == null) {
+                // 1. create a new token
+                User user = currentUser.getUser();
+                String token = UUID.randomUUID().toString();
+                VerificationToken verificationToken = new VerificationToken();
+                verificationToken.setUser(user);
+                verificationToken.setToken(token);
+                verificationToken.setAction(1);
+                verificationToken.setEmail(adminEmail);
+                verificationTokenService.save(verificationToken);
+                // 2. create  path : admin/changemail/{userId}/{token}
+                String link = "localhost:8080/admin/changeemail/" + user.getId() + "/" + token;
+                // create an email with the path
+                Context context = new Context();
+                context.setVariable("header", "Zmiana emaila w serwisie Zarządzaj wspólnotą");
+                context.setVariable("title", "Witaj " + user.getUsername() + "!");
+                context.setVariable("description", "Jeśli potwierdzasz zmianę emaila, kliknij w poniższy link");
+                context.setVariable("link", link);
+                String body = templateEngine.process("/email/templateEmailChange", context);
+                emailSender.sendEmail(adminEmail, "Zarządzaj swoją wspólnotą zmiana emaila", body);
+
+                // send email with uuid to confirm email. After confirmation the change is done.
+            } else { emaiExistsInDatabase = true;}
+        } else {// else means errors - go back to the form;
+            error = 0;
+            if (adminEmail == null || adminEmail == "") { adminEmail = ""; error += 1;};
+            if (!adminEmail.equals(adminEmailCheck)) {error += 2;}
+            if (matcher != null && !matcher.find()) {error += 4;}
+            if (emaiExistsInDatabase) {error += 8;}
+            model.addAttribute("error", error);
+            model.addAttribute("adminEmail", adminEmail);
+            model.addAttribute("adminEmailCheck", "");
+            return ("/admin/changeAdminEmail");
+        }
+        return"/";
+    }
+    // finally to finish email change verification of the email:
+    @GetMapping ("/changeemail/{userId}/{token}")
+    public String changeEmail (@AuthenticationPrincipal CurrentUser currentUser,
+                               @PathVariable long userId, @PathVariable String token) {
+        User user = currentUser.getUser();
+        if (user != null && user.getId() == userId) {
+            VerificationToken verificationToken = verificationTokenService.findByToken(token);
+            if (verificationToken != null && verificationToken.getToken().equals(token)
+                    && verificationToken.getUser().getId() == user.getId()) {
+                User userChangeEmail = userService.findById(userId);
+                userChangeEmail.setUsername(verificationToken.getEmail());
+                userService.saveUser(userChangeEmail);
+                verificationTokenService.delete(verificationToken);
+                return "redirect:/logout";
+            }
+        }
+        return "redirect:/";
+    }
 
 }
